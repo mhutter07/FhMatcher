@@ -14,7 +14,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "questions")
+@Table(name = "Questions")
 
 public class QuestionModel implements java.io.Serializable {
 	
