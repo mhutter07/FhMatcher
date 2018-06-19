@@ -40,7 +40,7 @@ public class ProfilesController {
 	@Autowired
 	UserRoleDao userRoleDao;
 	
-	@RequestMapping(value = { "/", "index" })
+	@RequestMapping(value = { "/", "list" })
 	public String index(Model model) {
 
 		List<ProfilesModel> profiles = profileDao.getProfiles();
