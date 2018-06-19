@@ -64,9 +64,10 @@
    	 <a href="fillQuestions" class="btn btn-default navbar-btn">
 			Go to Questions
 	 </a>
-	 <a href="admin" class="btn btn-default navbar-btn">
+	 <!--<a href="admin" class="btn btn-default navbar-btn">
 			Admin Panel
-	 </a>
+	 </a>-->
+	 <a sec:authorize="hasRole('ADMIN')" th:href="admin" class="btn btn-default navbar-btn">Admin Panel</a></td>
 	</div>
 
 

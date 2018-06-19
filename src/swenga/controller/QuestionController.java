@@ -35,6 +35,7 @@ public class QuestionController {
 	@Transactional
 	public String fillQuestions(Model model) {
 		
+<<<<<<< Updated upstream
 		QuestionModel q1 = new QuestionModel("Interessiert in?");
 		questionDao.persist(q1);
 		QuestionModel q2 = new QuestionModel("Gesuchtes Alter?");
@@ -45,6 +46,13 @@ public class QuestionController {
 		questionDao.persist(q4);		
 		QuestionModel q5 = new QuestionModel("Oranges oder Grünes Twinni?");
 		questionDao.persist(q5);
+=======
+		QuestionModel q1 = new QuestionModel("Frage 1");
+		questionDao.persist(q1);
+
+		QuestionModel q2 = new QuestionModel("Frage 2");
+		questionDao.persist(q2);
+>>>>>>> Stashed changes
 
 		return "forward:question";
 	}

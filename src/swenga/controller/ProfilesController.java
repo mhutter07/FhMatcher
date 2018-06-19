@@ -82,6 +82,7 @@ public class ProfilesController {
 		return "forward:list";
 	}
 	
+	
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
 	public String profileCall() {
 		return "profile";
