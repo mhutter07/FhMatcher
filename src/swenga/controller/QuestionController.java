@@ -22,13 +22,24 @@ public class QuestionController {
 	QuestionDao questionDao;	
 	
 	@RequestMapping(value = "/question", method = RequestMethod.GET)
-	public String callQuestion() {
+	public String callQuestion(Model model) {
+		
+		List<QuestionModel> questions = questionDao.getQuestions();
+
+		model.addAttribute("questions", questions);
+		
 		return "/question";
 	}
 	
 	@RequestMapping("/fillQuestions")
 	@Transactional
 	public String fillQuestions(Model model) {
+		
+		QuestionModel q1 = new QuestionModel("Frage 1");
+		questionDao.persist(q1);
+
+		QuestionModel q2 = new QuestionModel("Frage 2");
+		questionDao.persist(q2);
 
 		return "forward:question";
 	}
