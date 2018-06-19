@@ -25,7 +25,7 @@ public class QuestionController {
 		return "/question";
 =======
 	@RequestMapping(value = { "/", "listQuestion" })
-	public String question(Model model) {
+	public String questionascv(Model model) {
 
 		List<QuestionModel> questions = questionDao.getQuestions();
 
