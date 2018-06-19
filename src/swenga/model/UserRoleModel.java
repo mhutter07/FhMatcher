@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.GenerationType;
 
 @Entity
-@Table (name = "UserRoles")
+@Table (name = "user_roles")
 public class UserRoleModel implements java.io.Serializable {
 	
 	@Id

@@ -10,6 +10,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import swenga.model.ProfilesModel;
 import swenga.model.QuestionModel;
 
 @Repository
@@ -39,6 +40,10 @@ public class QuestionDao {
 			return null;
 		}
  
+	}
+	
+	public void persist(QuestionModel question) {
+		entityManager.persist(question);
 	}
 }
 
