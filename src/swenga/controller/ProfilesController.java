@@ -96,12 +96,12 @@ public class ProfilesController {
 	public String addProfile() {
 		return "addProfile";
 	}
-	
+/*
 	@RequestMapping(value = "/addProfile", method = RequestMethod.POST)
 	public String addProfile(@Valid ProfilesModel newProfilesModel, BindingResult bindingResult, Model model, 
 			@RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname, @RequestParam("gender") String gender,
 			@RequestParam("dayOfBirth") String dayOfBirth, @RequestParam("username") String username, 
-			@RequestParam("password") String password) throws ParseException, java.text.ParseException {
+			@RequestParam("password") String password) throws ParseException, java.text.ParseException 
     
 	public String addProfile(@Valid ProfilesModel newProfilesModel, BindingResult bindingResult, Model model,
 			@RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname, @RequestParam("gender") String gender,
@@ -148,7 +148,7 @@ public class ProfilesController {
 		return "forward:index";
 	}
 	
-
+*/
 	@ExceptionHandler(Exception.class)
 	public String handleAllException(Exception ex) {
 
@@ -156,6 +156,6 @@ public class ProfilesController {
 
 	}
 	
-	
+
 
 }
