@@ -1,5 +1,6 @@
 package swenga.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import swenga.dao.QuestionDao;
+import swenga.model.ProfilesModel;
 import swenga.model.QuestionModel;
 
 @Controller
@@ -22,6 +24,13 @@ public class QuestionController {
 	@RequestMapping(value = "/question", method = RequestMethod.GET)
 	public String callQuestion() {
 		return "/question";
+	}
+	
+	@RequestMapping("/fillQuestions")
+	@Transactional
+	public String fillQuestions(Model model) {
+
+		return "forward:question";
 	}
 	
 	
