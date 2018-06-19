@@ -96,6 +96,12 @@ public class ProfilesController {
 	public String addProfile() {
 		return "addProfile";
 	}
+	
+	@RequestMapping(value = "/admin", method = RequestMethod.GET)
+	public String admin() {
+		return "admin";
+	}
+	
 /*
 	@RequestMapping(value = "/addProfile", method = RequestMethod.POST)
 	public String addProfile(@Valid ProfilesModel newProfilesModel, BindingResult bindingResult, Model model, 
