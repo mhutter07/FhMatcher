@@ -19,9 +19,19 @@ public class QuestionController {
 	@Autowired
 	QuestionDao questionDao;	
 	
+<<<<<<< HEAD
 	@RequestMapping(value = "/question", method = RequestMethod.GET)
 	public String callQuestion() {
 		return "/question";
+=======
+	@RequestMapping(value = { "/", "listQuestion" })
+	public String question(Model model) {
+
+		List<QuestionModel> questions = questionDao.getQuestions();
+
+		model.addAttribute("questions", questions);
+		return "question";
+>>>>>>> controller fix test
 	}
 	
 	
