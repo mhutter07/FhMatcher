@@ -25,7 +25,7 @@ public class QuestionController {
 		return "/question";
 =======
 	@RequestMapping(value = { "/", "listQuestion" })
-	public String questionniowefkn(Model model) {
+	public String question(Model model) {
 
 		List<QuestionModel> questions = questionDao.getQuestions();
 
