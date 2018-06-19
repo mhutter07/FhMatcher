@@ -35,11 +35,16 @@ public class QuestionController {
 	@Transactional
 	public String fillQuestions(Model model) {
 		
-		QuestionModel q1 = new QuestionModel("Frage 1");
+		QuestionModel q1 = new QuestionModel("Interessiert in?");
 		questionDao.persist(q1);
-
-		QuestionModel q2 = new QuestionModel("Frage 2");
-		questionDao.persist(q2);
+		QuestionModel q2 = new QuestionModel("Gesuchtes Alter?");
+		questionDao.persist(q2);		
+		QuestionModel q3 = new QuestionModel("Was finden Sie in einer Beziehung am Wichtigsten?");
+		questionDao.persist(q3);
+		QuestionModel q4 = new QuestionModel("Was ist Ihnen an dem Partner am Wichtigsten?");
+		questionDao.persist(q4);		
+		QuestionModel q5 = new QuestionModel("Oranges oder Grünes Twinni?");
+		questionDao.persist(q5);
 
 		return "forward:question";
 	}
