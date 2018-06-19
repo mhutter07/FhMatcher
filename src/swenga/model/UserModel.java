@@ -27,7 +27,6 @@ public class UserModel implements java.io.Serializable{
 	
 	@Column(name = "userName", nullable = false, length = 30)
 	private String userName;
- 
 
 	@Column(name = "password", nullable = false, length = 60)
 	private String password;
@@ -35,7 +34,7 @@ public class UserModel implements java.io.Serializable{
 	@Column(name = "enabled", nullable = false)
 	private boolean enabled;
 	
-	@OneToOne(cascade = CascadeType.PERSIST)
+	@OneToOne(mappedBy = "profile")
 	private ProfilesModel profile;
 	
 	@ManyToMany(fetch=FetchType.LAZY,cascade=CascadeType.PERSIST)
@@ -52,12 +51,22 @@ public class UserModel implements java.io.Serializable{
 		this.enabled = enabled;
 	}
 
+
+
 	public String getUserName() {
 		return userName;
 	}
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public ProfilesModel getProfile() {
+		return profile;
+	}
+
+	public void setProfile(ProfilesModel profile) {
+		this.profile = profile;
 	}
 
 	public String getPassword() {
@@ -92,13 +101,5 @@ public class UserModel implements java.io.Serializable{
 	public void encryptPassword() {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		password = passwordEncoder.encode(password);		
-	}
-
-	public ProfilesModel getProfile() {
-		return profile;
-	}
-
-	public void setProfile(ProfilesModel profile) {
-		this.profile = profile;
 	}
 }

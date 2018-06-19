@@ -11,6 +11,7 @@
 	<http>
 		<csrf disabled="true"/>
 		<intercept-url pattern="/login" access="permitAll" />
+		<intercept-url pattern="/addProfile" access="permitAll" />
 		<intercept-url pattern="/fillUsers" access="permitAll" />
 		<!--<intercept-url pattern="/images/**" access="permitAll" /> -->
 

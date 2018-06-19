@@ -47,10 +47,10 @@
 							<label for="inputGender" class="col-md-2 control-label">Gender
 							</label>
 							<div class="col-md-10">
-								<input id ="inputGender" type="radio" name="gender" th:value="${profiles} ? ${profiles.gender}" value="true">
+								<input id ="inputGender" type="radio" name="gender" th:checked="${profiles} ? ${profiles.gender}" value="true">
 								<label class="_58mt" for = "gender">Female</label>
 							
-								<input id ="inputGender" type="radio" name="gender" th:value="${profiles} ? ${profiles.gender}" value="false">
+								<input id ="inputGender" type="radio" name="gender" th:checked="${profiles} ? ${profiles.gender}" value="false">
 								<label class="_58mt" for = "gender">Male</label>
 							</div>
 						</div>
@@ -79,7 +79,7 @@
 							<label for="inputPassword" class="col-md-2 control-label">Choose a password
 							</label>
 							<div class="col-md-10">
-								<input class="form-control" id="inputPassword" type="text" name="password" th:value="${users} ? ${users.password}">
+								<input class="form-control" id="inputPassword" type="password" name="password" th:value="${users} ? ${users.password}">
 							</div>
 						</div>
 
@@ -87,7 +87,7 @@
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-2">
 								<button type="submit" class="btn btn-primary">Submit</button>
-								<a href="listEmployees" class="btn btn-default">
+								<a href="/FhMatcher/login" class="btn btn-default">
 									Cancel
 								</a>
 							</div>
