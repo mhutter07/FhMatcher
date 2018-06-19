@@ -21,7 +21,6 @@ public class QuestionController {
 	@Autowired
 	QuestionDao questionDao;	
 	
-//klnefköeajbfkuejbfnläwabvöorjvbkörboöuiravbnkwrbvöieryubi<VNEDO
 	@RequestMapping(value = "/question", method = RequestMethod.GET)
 	public String callQuestion() {
 		return "/question";
