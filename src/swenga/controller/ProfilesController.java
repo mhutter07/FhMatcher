@@ -91,6 +91,29 @@ public class ProfilesController {
 		return "admin";
 	}
 	
+	@RequestMapping(value = "/profile$*")
+	public String profileCallAgain(Model model) {
+		
+		List<ProfilesModel> profi = profileDao.requestProfile(getUsername());
+		model.addAttribute("profi",profi);
+		System.out.println(profi);
+		
+		return "forward:profile";
+	}
+	
+	/*List<ProfilesModel> profiles = profileDao.getProfiles();
+	model.addAttribute("profiles", profiles);*/
+	
+	public String getUsername() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		return auth.getName();
+	}
+	
+	@RequestMapping(value = "/profile$", method = RequestMethod.GET)
+	public String profileCallDown() {
+		return "/profile$"+getUsername();
+	}
+	
 	@Secured("ROLE_ADMIN")
 	@RequestMapping("/delete")
 	public String deleteData(Model model, @RequestParam int id) {
@@ -104,9 +127,13 @@ public class ProfilesController {
 		
 		List<ProfilesModel> profiles = profileDao.getProfiles();
 		model.addAttribute("profiles", profiles);
+
+		
+		//model.addAttribute("profi", profileDao.getName(firstname));
 		
 		return "profile";
 	}
+	
 	
 	@RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
 	public String handleLogin() {

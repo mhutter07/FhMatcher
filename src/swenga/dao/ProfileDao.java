@@ -7,6 +7,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +36,15 @@ public class ProfileDao {
 		typedQuery.setParameter("search", "%" + searchString + "%");
 		List<ProfilesModel> typedResultList = typedQuery.getResultList();
 		return typedResultList;
+	}
+	
+	public List<ProfilesModel> requestProfile(String username){
+		TypedQuery<ProfilesModel> typedQuery = entityManager.createQuery(
+				"select p from ProfilesModel p where p.userName like :name", ProfilesModel.class);
+		typedQuery.setParameter("name", username);
+		List<ProfilesModel> typedResultList = typedQuery.getResultList();
+		return typedResultList;
+		
 	}
  
 	public ProfilesModel getProfiles(int i) throws DataAccessException {
@@ -75,6 +86,7 @@ public class ProfileDao {
 	public void persist(ProfilesModel user) {
 		entityManager.persist(user);
 	}
+	
 
 	
 }
