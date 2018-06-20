@@ -25,15 +25,6 @@
 				</center>
 			</h1>
 		</div>
-<<<<<<< Updated upstream
-
-		<nav th:replace="~{includes/searchNav :: questionList}"></nav>
-
-		<!--  1 simple button ----------------------------------------------------------- -->
-		<div class="row"></div>
-		<!--  1 simple button ----------------------------------------------------------- -->
-
-=======
 		
 		<nav th:replace="~{includes/searchNav :: questionList}"></nav>
 
@@ -41,8 +32,7 @@
 		<div class="row">
 		</div>
 		<!--  1 simple button ----------------------------------------------------------- -->
-		
->>>>>>> Stashed changes
+
 		<div class="row">
 			<div class="col-md-10 col-md-offset-1">
 
@@ -58,7 +48,6 @@
 						<!--  list all items ----------------------------------------------------------- -->
 						<tr th:each="question : ${questions}">
 
-<<<<<<< Updated upstream
 							<td th:text="${question.id}"></td>
 							<td th:text="${question.description}"></td>
 							<td><input type="radio" id="li" name="${question.id}" value="${question.id}">
@@ -68,32 +57,7 @@
 						<!--  list all items ----------------------------------------------------------- -->
 					</tbody>
 				</table>
-=======
-						<!-- --------------  question 1 ---------------- -->
-						<div class="form-group">
-							<label for="inputDescription" class="col-md-2 control-label">Question 1
-							</label>
-							<div class="col-md-10">
-								<input class="form-control" id="inputDescription" type="text" name="description" th:value="${questions} ? ${questions.description}">
-							</div>
-						</div>
-						<!-- --------------  question 2 ---------------- -->
-						<div class="form-group">
-							<label for="inputDescription" class="col-md-2 control-label">Question 2
-							</label>
-							<div class="col-md-10">
-								<input class="form-control" id="inputDescription" type="text" name="description" th:value="${questions} ? ${questions.description}">
-							</div>
-						</div>
-						<!-- --------------  question 3 ---------------- -->
-						<div class="form-group">
-							<label for="inputDescription" class="col-md-2 control-label">Question 3
-							</label>
-							<div class="col-md-10">
-								<input class="form-control" id="inputDescription" type="text" name="description" th:value="${questions} ? ${questions.description}">
-							</div>
-						</div>
->>>>>>> Stashed changes
+
 
 			</div>
 		</div>
