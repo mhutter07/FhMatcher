@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import swenga.dao.ProfileDao;
 import swenga.dao.UserRoleDao;
 import swenga.model.ProfilesModel;
+import swenga.model.QuestionModel;
 import swenga.model.UserRoleModel;
 
 @Controller
@@ -99,7 +100,11 @@ public class ProfilesController {
 	}
 	
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
-	public String profileCall() {
+	public String profileCall(Model model) {
+		
+		List<ProfilesModel> profiles = profileDao.getProfiles();
+		model.addAttribute("profiles", profiles);
+		
 		return "profile";
 	}
 	
@@ -113,6 +118,7 @@ public class ProfilesController {
 	
 	@RequestMapping(value = "/addProfile", method = RequestMethod.GET)
 	public String addProfile() {
+		
 		return "addProfile";
 	}
 
