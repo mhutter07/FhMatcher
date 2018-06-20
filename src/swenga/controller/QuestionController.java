@@ -35,16 +35,22 @@ public class QuestionController {
 	@Transactional
 	public String fillQuestions(Model model) {
 		
-		QuestionModel q1 = new QuestionModel("Interessiert in?");
+		QuestionModel q1 = new QuestionModel("Interessiert in? [m/w]");
 		questionDao.persist(q1);
-		QuestionModel q2 = new QuestionModel("Gesuchtes Alter?");
+		QuestionModel q2 = new QuestionModel("Morgen oder Abendmensch? [morgen/abend]");
 		questionDao.persist(q2);		
-		QuestionModel q3 = new QuestionModel("Was finden Sie in einer Beziehung am Wichtigsten?");
+		QuestionModel q3 = new QuestionModel("Hunde- oder Katzenmensch? [wau/miau]");
 		questionDao.persist(q3);
-		QuestionModel q4 = new QuestionModel("Was ist Ihnen an dem Partner am Wichtigsten?");
-		questionDao.persist(q4);		
-		QuestionModel q5 = new QuestionModel("Oranges oder Grünes Twinni?");
+		QuestionModel q4 = new QuestionModel("Rock- oder Dancemusikliebhaber? [rock/dance]");
+		questionDao.persist(q4);	
+		QuestionModel q5 = new QuestionModel("Stadt- oder Landmensch? [stadt/land]");
 		questionDao.persist(q5);
+		QuestionModel q6 = new QuestionModel("Unternehmenslustig oder Stubenhocker? [pardey/fernsehn]");
+		questionDao.persist(q6);
+		QuestionModel q7 = new QuestionModel("Bier- oder Weintrangla? [bier/wein]");
+		questionDao.persist(q7);
+		QuestionModel q8 = new QuestionModel("Oranges oder Grünes Twinni? [orange/grün]");
+		questionDao.persist(q8);
 
 
 		return "forward:question";
