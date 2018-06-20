@@ -104,12 +104,40 @@ p {
 		</div>
 	</nav>
 
+
 	<article>
 		<a  class="btn">Contact</a>
 		<a th:action="@{/logout}" method="post"  class="btn">Sign Out</a></br>
  		<a href="fillQuestions" class="btn"> Go to Questions </a></br>
 		<a sec:authorize="hasRole('ADMIN')" th:href="admin" class="btn">Admin Panel</a>
 	</article>
+
+	<h2 style="text-align:center">User Profile Card</h2>
+	
+	<div class="card">
+	  <img src="user.jpg" alt="User" style="width:100%">
+	  
+	  <p class="title">Information Management</p>
+	  <p><tr th:each="profile : ${profiles}">
+	  
+		<td th:text="${profile.id}"></td>
+		<td th:text="${profile.firstname}"></td>
+		<td th:text="${profile.lastname}"></td></p>
+	  <p>Day Of Birth</p>
+	  <p>Gender</p>
+	 <p><button>Contact</button></p>
+	 <p><form class="btn btn-default navbar-btn" th:action="@{/logout}" method="post" >
+      		<input class="btn btn-danger" type="submit" value="Sign Out"/>
+   		</form> 
+   	 <a href="fillQuestions" class="btn btn-default navbar-btn">
+			Go to Questions
+	 </a>
+	 <!--<a href="admin" class="btn btn-default navbar-btn">
+			Admin Panel
+	 </a>-->
+	 <a sec:authorize="hasRole('ADMIN')" th:href="admin" class="btn btn-default navbar-btn">Admin Panel</a></td>
+	</div>
+
 
 
 
