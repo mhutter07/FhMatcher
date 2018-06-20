@@ -108,7 +108,7 @@ public class ProfilesController {
 		return "admin";
 	}
 	
-/*
+
 	@RequestMapping(value = "/addProfile", method = RequestMethod.POST)
 	public String addProfile(@Valid ProfilesModel newProfilesModel, BindingResult bindingResult, Model model, 
 			@RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname, @RequestParam("gender") String gender,
