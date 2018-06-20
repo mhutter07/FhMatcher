@@ -34,13 +34,22 @@ public class ProfilesController {
 	@Autowired
 	UserRoleDao userRoleDao;
 	
-	@RequestMapping(value = { "/", "list" })
+	@RequestMapping(value = { "list" })
 	public String index(Model model) {
 
 		List<ProfilesModel> profiles = profileDao.getProfiles();
 
 		model.addAttribute("profiles", profiles);
 		return "index";
+	}
+	
+	@RequestMapping(value = { "/fillMembers" })
+	public String fillMembers(Model model) {
+
+		List<ProfilesModel> profiles = profileDao.getProfiles();
+
+		model.addAttribute("profiles", profiles);
+		return "admin";
 	}
 	
 	@RequestMapping("/fillData")
@@ -67,14 +76,14 @@ public class ProfilesController {
 		user2.addUserRole(userRole);
 		profileDao.persist(user2);
 
-		return "forward:list";
+		return "forward:fillMembers";
 	}
 	
 	@RequestMapping("/searchProfiles")
 	public String search(Model model, @RequestParam String searchString) {
 		model.addAttribute("profiles", profileDao.searchProfiles(searchString));
 
-		return "index";
+		return "admin";
 	}
 	
 	@Secured("ROLE_ADMIN")
@@ -82,7 +91,7 @@ public class ProfilesController {
 	public String deleteData(Model model, @RequestParam int id) {
 		profileDao.delete(id);
 
-		return "forward:list";
+		return "forward:fillMembers";
 	}
 	
 	
@@ -91,7 +100,7 @@ public class ProfilesController {
 		return "profile";
 	}
 	
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	@RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
 	public String handleLogin() {
 		return "login";
 	}
@@ -101,8 +110,6 @@ public class ProfilesController {
 		return "addProfile";
 	}
 
-
-	
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public String admin() {
 		return "admin";
@@ -122,34 +129,58 @@ public class ProfilesController {
 			}
 			model.addAttribute("errorMessage", errorMessage);
 			
-			return "forward:list";
+			return "forward:login";
 		}
 		
 		List<ProfilesModel> user = profileDao.findByUsername(username);
 		
 		if (CollectionUtils.isEmpty(user)) {
 			
+			if (firstname.isEmpty()) {
+				model.addAttribute("errorMessage", "Please enter a valid first name!");
+				return "/addProfile";
+			}
+			if (lastname.isEmpty()) {
+				model.addAttribute("errorMessage", "Please enter a valid last name!");
+				return "/addProfile";
+			}
+			if (gender.isEmpty()) {
+				model.addAttribute("errorMessage", "Please enter a valid gender!");
+				return "/addProfile";
+			}
+			
 			if (dayOfBirth.isEmpty()) {
 				model.addAttribute("errorMessage", "Please enter a valid day of birth!");
 				return "/addProfile";
 			}
+			
+			if (username.isEmpty()) {
+				model.addAttribute("errorMessage", "Please enter a valid user name!");
+				return "/addProfile";
+			}
+			
+			if (password.isEmpty()) {
+				model.addAttribute("errorMessage", "Please enter a valid password!");
+				return "/addProfile";
+			}
+			
 			else {
 			
-			SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
-			Date birthday = formatDate.parse(dayOfBirth);
-			
-			UserRoleModel role = userRoleDao.getRole("ROLE_USER");
-					if (role == null) {
-						role = new UserRoleModel("ROLE_USER");
-					}
-					
-			ProfilesModel newUser = new ProfilesModel(firstname, lastname, Boolean.valueOf(gender), birthday, username, password, true);
-			newUser.encryptPassword();
-			newUser.addUserRole(role);
-			profileDao.merge(newUser);
-			
-			
-			return "forward:list";
+				SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
+				Date birthday = formatDate.parse(dayOfBirth);
+				
+				UserRoleModel role = userRoleDao.getRole("ROLE_USER");
+						if (role == null) {
+							role = new UserRoleModel("ROLE_USER");
+						}
+						
+				ProfilesModel newUser = new ProfilesModel(firstname, lastname, Boolean.valueOf(gender), birthday, username, password, true);
+				newUser.encryptPassword();
+				newUser.addUserRole(role);
+				profileDao.merge(newUser);
+				
+				
+				return "forward:list";
 			}
 			
 		}
