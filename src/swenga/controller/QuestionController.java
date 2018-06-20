@@ -35,6 +35,8 @@ public class QuestionController {
 	@Transactional
 	public String fillQuestions(Model model) {
 		
+		if(model == null)
+		{
 		QuestionModel q1 = new QuestionModel("Interessiert in? [m/w]");
 		questionDao.persist(q1);
 		QuestionModel q2 = new QuestionModel("Morgen oder Abendmensch? [morgen/abend]");
@@ -51,8 +53,8 @@ public class QuestionController {
 		questionDao.persist(q7);
 		QuestionModel q8 = new QuestionModel("Oranges oder Grünes Twinni? [orange/grün]");
 		questionDao.persist(q8);
-
-
+		}
+		
 		return "forward:question";
 	}
 	
