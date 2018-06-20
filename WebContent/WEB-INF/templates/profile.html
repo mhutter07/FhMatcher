@@ -47,7 +47,7 @@
 </style>
 </head>
 <body>
-
+	
 	<h2 style="text-align:center">User Profile Card</h2>
 	
 	<div class="card">
@@ -58,9 +58,9 @@
 	  <p>Day Of Birth</p>
 	  <p>Gender</p>
 	 <p><button>Contact</button></p>
-	 <p><button th:action="@{/logout}" method="post" >
-      	<input type="submit"/> Sign Out
-   	 </button>
+	 <p><form class="btn btn-default navbar-btn" th:action="@{/logout}" method="post" >
+      		<input class="btn btn-danger" type="submit" value="Sign Out"/>
+   		</form> 
    	 <a href="fillQuestions" class="btn btn-default navbar-btn">
 			Go to Questions
 	 </a>
@@ -68,6 +68,7 @@
 			Admin Panel
 	 </a>-->
 	 <a sec:authorize="hasRole('ADMIN')" th:href="admin" class="btn btn-default navbar-btn">Admin Panel</a></td>
+	 		<!-- HTML form with search textbox and submit button-->
 	</div>
 
 

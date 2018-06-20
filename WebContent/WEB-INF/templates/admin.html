@@ -60,7 +60,6 @@
 							<td th:text="${profile.gender ? 'Female' : 'Male'}"></td>
 							<td th:text="${#calendars.format(profile.dayOfBirth,'dd.MM.yyyy')}"></td>
 							<td><a th:href="@{/delete(id=${profile.id})}" class="btn btn-danger">Delete</a></td>
-							<!-- <td><a sec:authorize="hasRole('ADMIN')" th:href="@{/delete(id=${profile.id})}">Delete</a></td> -->
 							
 						</tr>
 						<!--  list all items ----------------------------------------------------------- -->
