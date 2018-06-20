@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
   <title>Profiles</title>
   <meta charset="utf-8">
@@ -54,13 +56,17 @@
 	  <img src="user.jpg" alt="User" style="width:100%">
 	  
 	  <p class="title">Information Management</p>
-	  <p>FH JOANNEUM Graz</p>
+	  <p><tr th:each="profile : ${profiles}">
+	  
+		<td th:text="${profile.id}"></td>
+		<td th:text="${profile.firstname}"></td>
+		<td th:text="${profile.lastname}"></td></p>
 	  <p>Day Of Birth</p>
 	  <p>Gender</p>
 	 <p><button>Contact</button></p>
-	 <p><button th:action="@{/logout}" method="post" >
-      	<input type="submit"/> Sign Out
-   	 </button>
+	 <p><form class="btn btn-default navbar-btn" th:action="@{/logout}" method="post" >
+      		<input class="btn btn-danger" type="submit" value="Sign Out"/>
+   		</form> 
    	 <a href="fillQuestions" class="btn btn-default navbar-btn">
 			Go to Questions
 	 </a>
