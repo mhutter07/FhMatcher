@@ -120,7 +120,7 @@ public class ProfilesController {
 	public String addProfile(@Valid ProfilesModel newProfilesModel, BindingResult bindingResult, Model model, 
 			@RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname, @RequestParam("gender") String gender,
 			@RequestParam("dayOfBirth") String dayOfBirth, @RequestParam("username") String username, 
-			@RequestParam("password") String password) throws ParseException, java.text.ParseException {
+			@RequestParam("password") String password, @RequestParam("confirmPassword") String confirmPassword) throws ParseException, java.text.ParseException {
 		
 		if (bindingResult.hasErrors()) {
 			String errorMessage = "";
@@ -161,6 +161,16 @@ public class ProfilesController {
 			
 			if (password.isEmpty()) {
 				model.addAttribute("errorMessage", "Please enter a valid password!");
+				return "/addProfile";
+			}
+			
+			if (confirmPassword.isEmpty()) {
+				model.addAttribute("errorMessage", "Please confirm your password!");
+				return "/addProfile";
+			}
+			
+			if (!(confirmPassword.equals(password))) {
+				model.addAttribute("errorMessage", "Your passwords did not match!" + confirmPassword + password);
 				return "/addProfile";
 			}
 			
