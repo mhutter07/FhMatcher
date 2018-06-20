@@ -50,8 +50,8 @@
 
 							<td th:text="${question.id}"></td>
 							<td th:text="${question.description}"></td>
-							<td><input type="radio" id="li" name="${question.id}" value="${question.id}">
-								<input type="radio" id="re" name="${question.id}" value="${question.id}">
+							<td><input type="radio" id="li" th:name="${question.id}" value="${question.id}">
+								<input type="radio" id="re" th:name="${question.id}" value="${question.id}">
 							</td>
 						</tr>
 						<!--  list all items ----------------------------------------------------------- -->
