@@ -5,11 +5,10 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
- 
+
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import swenga.model.ProfilesModel;
 
@@ -41,10 +40,6 @@ public class ProfileDao {
 		return entityManager.find(ProfilesModel.class, i);
 	}
  
-	public void persist(ProfilesModel profile) {
-		entityManager.persist(profile);
-	}
- 
 	public ProfilesModel merge(ProfilesModel profile) {
 		return entityManager.merge(profile);
 	}
@@ -67,6 +62,18 @@ public class ProfileDao {
 	public static List<ProfilesModel> findByName(String firstname) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public List<ProfilesModel> findByUsername(String userName) {
+		TypedQuery<ProfilesModel> typedQuery = entityManager.createQuery("select p from ProfilesModel p where p.userName = :name",
+				ProfilesModel.class);
+		typedQuery.setParameter("name", userName);
+		List<ProfilesModel> typedResultList = typedQuery.getResultList();
+		return typedResultList;
+	}
+
+	public void persist(ProfilesModel user) {
+		entityManager.persist(user);
 	}
 
 	

@@ -1,4 +1,4 @@
-package swenga.dao;
+/*package swenga.dao;
 
 import java.util.List;
 
@@ -32,4 +32,4 @@ public class UserDao {
 	}
 	
 
-}
+}*/

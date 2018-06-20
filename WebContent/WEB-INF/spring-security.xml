@@ -10,9 +10,14 @@
 	<http>
 		<csrf disabled="true"/>
 		<intercept-url pattern="/login" access="permitAll" />
+		<intercept-url pattern="/addProfile" access="permitAll" />
 		<intercept-url pattern="/fillUsers" access="permitAll" />
 		<intercept-url pattern="/images/**" access="permitAll" />
+
+
+
 		<intercept-url pattern="/addProfile" access="permitAll" />
+
 		<!-- <intercept-url pattern="/**" access="hasRole('USER')" />-->
 		<!-- <intercept-url pattern="/**" access="hasRole('USER') or hasRole('ADMIN')" /> -->
 		<!-- <intercept-url pattern="/**" access="authenticated" />  ERLAUBT ALLE SITES WEHE IHR PACKTS DES REIN IHR SCHURKEN !-->
@@ -31,15 +36,15 @@
  
 		       users-by-username-query="
 		        SELECT username, password, CASE enabled WHEN 1 THEN 'true' ELSE 'false' END 'enabled'
-		        FROM users
+		        FROM profiles
 		        WHERE username=?;"
  
 		       authorities-by-username-query="
-		       	SELECT u.username, ur.role
-				FROM users u
-				INNER JOIN users_user_roles u2r ON u.id = u2r.users_id
+		       	SELECT p.username, ur.role
+				FROM profiles p
+				INNER JOIN profiles_user_roles u2r ON p.id = u2r.users_id
 				INNER JOIN user_roles ur        ON u2r.userRoles_id = ur.id
-				WHERE u.username=?;"
+				WHERE p.username=?;"
 	        />
 		</authentication-provider>
 	</authentication-manager>

@@ -2,7 +2,6 @@ package swenga.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -13,29 +12,24 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import swenga.dao.ProfileDao;
-import swenga.model.ProfilesModel;
-import swenga.model.UserModel;
-import swenga.model.UserRoleModel;
-import swenga.dao.UserDao;
 import swenga.dao.UserRoleDao;
+import swenga.model.ProfilesModel;
+import swenga.model.UserRoleModel;
 
 @Controller
 public class ProfilesController {
 	
 	@Autowired
 	ProfileDao profileDao;
-	
-	@Autowired
-	UserDao userDao;
 	
 	@Autowired
 	UserRoleDao userRoleDao;
@@ -54,15 +48,24 @@ public class ProfilesController {
 	public String fillData(Model model) {
 
 		Date now = new Date();
+		
+		UserRoleModel adminRole = userRoleDao.getRole("ROLE_ADMIN");
+		if (adminRole == null)
+			adminRole = new UserRoleModel("ROLE_ADMIN");
+ 
+		UserRoleModel userRole = userRoleDao.getRole("ROLE_USER");
+		if (userRole == null)
+			userRole = new UserRoleModel("ROLE_USER");
 
-		ProfilesModel p1 = new ProfilesModel("Dominik", "Pagger", false, now);
-		profileDao.persist(p1);
+		ProfilesModel user1 = new ProfilesModel("Dominik", "Pagger", false, now, "domi", "password", true);
+		user1.encryptPassword();
+		user1.addUserRole(userRole);
+		profileDao.persist(user1);
 
-		ProfilesModel p2 = new ProfilesModel("Miriam", "Grainer", true, now);
-		profileDao.persist(p2);
-
-		ProfilesModel p3 = new ProfilesModel("Sebastian", "Kurz", false, now);
-		profileDao.persist(p3);
+		ProfilesModel user2 = new ProfilesModel("Miriam", "Grainer", true, now, "miri", "password", true);
+		user2.encryptPassword();
+		user2.addUserRole(userRole);
+		profileDao.persist(user2);
 
 		return "forward:list";
 	}
@@ -97,6 +100,8 @@ public class ProfilesController {
 	public String addProfile() {
 		return "addProfile";
 	}
+
+
 	
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public String admin() {
@@ -108,12 +113,7 @@ public class ProfilesController {
 	public String addProfile(@Valid ProfilesModel newProfilesModel, BindingResult bindingResult, Model model, 
 			@RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname, @RequestParam("gender") String gender,
 			@RequestParam("dayOfBirth") String dayOfBirth, @RequestParam("username") String username, 
-			@RequestParam("password") String password) throws ParseException, java.text.ParseException 
-    
-	public String addProfile(@Valid ProfilesModel newProfilesModel, BindingResult bindingResult, Model model,
-			@RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname, @RequestParam("gender") String gender,
-			@RequestParam("dayOfBirth") String dayOfBirth, @RequestParam("username") String username, @RequestParam("password") String password) {
-
+			@RequestParam("password") String password) throws ParseException, java.text.ParseException {
 		
 		if (bindingResult.hasErrors()) {
 			String errorMessage = "";
@@ -122,40 +122,48 @@ public class ProfilesController {
 			}
 			model.addAttribute("errorMessage", errorMessage);
 			
-			return "forward:index";
-		}
-		List<UserModel> users = userDao.findByUsername(username);
-		
-		Calendar calendar = Calendar.getInstance();
-		SimpleDateFormat formatDate = new SimpleDateFormat("dd-MM-yyyy");
-		
-		try {
-			calendar.setTime(formatDate.parse(dayOfBirth));
-		} 
-		catch (ParseException e) {				
-			model.addAttribute("errorMessage", "Error:" + e.getMessage());
+			return "forward:list";
 		}
 		
-		Date birthday = calendar.getTime();
+		List<ProfilesModel> user = profileDao.findByUsername(username);
 		
-		if (users == null) {
+		if (CollectionUtils.isEmpty(user)) {
 			
-			UserRoleModel userRole = userRoleDao.getRole("ROLE_USER");
-			UserModel user = new UserModel(username, password, true);
-			user.encryptPassword();
-			user.addUserRole(userRole);
-			userDao.persist(user);
+			if (dayOfBirth.isEmpty()) {
+				model.addAttribute("errorMessage", "Please enter a valid day of birth!");
+				return "/addProfile";
+			}
+			else {
 			
-			ProfilesModel profile = new ProfilesModel(firstname, lastname, Boolean.valueOf(gender), birthday);
+			SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
+			Date birthday = formatDate.parse(dayOfBirth);
+			
+			UserRoleModel role = userRoleDao.getRole("ROLE_USER");
+					if (role == null) {
+						role = new UserRoleModel("ROLE_USER");
+					}
+					
+			ProfilesModel newUser = new ProfilesModel(firstname, lastname, Boolean.valueOf(gender), birthday, username, password, true);
+			newUser.encryptPassword();
+			newUser.addUserRole(role);
+			profileDao.merge(newUser);
+			
+			
+			return "forward:list";
+			}
+			
 		}
+		
 		else {
-			model.addAttribute("errorMessage", "User already exists");
+
+			model.addAttribute("errorMessage", "User name is already taken!");
+			return "/addProfile";
 		}
 		
-		return "forward:index";
+		
 	}
 	
-*/
+
 	@ExceptionHandler(Exception.class)
 	public String handleAllException(Exception ex) {
 

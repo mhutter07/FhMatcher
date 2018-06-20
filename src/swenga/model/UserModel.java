@@ -1,4 +1,4 @@
-package swenga.model;
+/*package swenga.model;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -28,7 +28,6 @@ public class UserModel implements java.io.Serializable{
 	@Column(name = "userName", nullable = false, length = 30)
 	private String userName;
  
-
 	@Column(name = "password", nullable = false, length = 60)
 	private String password;
  
@@ -101,4 +100,4 @@ public class UserModel implements java.io.Serializable{
 	public void setProfile(ProfilesModel profile) {
 		this.profile = profile;
 	}
-}
+}*/
