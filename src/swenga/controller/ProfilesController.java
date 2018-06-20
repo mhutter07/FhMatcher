@@ -85,6 +85,7 @@ public class ProfilesController {
 		return "forward:list";
 	}
 	
+	
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
 	public String profileCall() {
 		return "profile";
@@ -100,6 +101,14 @@ public class ProfilesController {
 		return "addProfile";
 	}
 
+
+	
+	@RequestMapping(value = "/admin", method = RequestMethod.GET)
+	public String admin() {
+		return "admin";
+	}
+	
+/*
 	@RequestMapping(value = "/addProfile", method = RequestMethod.POST)
 	public String addProfile(@Valid ProfilesModel newProfilesModel, BindingResult bindingResult, Model model, 
 			@RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname, @RequestParam("gender") String gender,
