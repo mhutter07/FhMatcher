@@ -1,4 +1,4 @@
-package swenga.model;
+/*package swenga.model;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,14 +27,14 @@ public class UserModel implements java.io.Serializable{
 	
 	@Column(name = "userName", nullable = false, length = 30)
 	private String userName;
-
+ 
 	@Column(name = "password", nullable = false, length = 60)
 	private String password;
  
 	@Column(name = "enabled", nullable = false)
 	private boolean enabled;
 	
-	@OneToOne(mappedBy = "profile")
+	@OneToOne(cascade = CascadeType.PERSIST)
 	private ProfilesModel profile;
 	
 	@ManyToMany(fetch=FetchType.LAZY,cascade=CascadeType.PERSIST)
@@ -51,22 +51,12 @@ public class UserModel implements java.io.Serializable{
 		this.enabled = enabled;
 	}
 
-
-
 	public String getUserName() {
 		return userName;
 	}
 
 	public void setUserName(String userName) {
 		this.userName = userName;
-	}
-
-	public ProfilesModel getProfile() {
-		return profile;
-	}
-
-	public void setProfile(ProfilesModel profile) {
-		this.profile = profile;
 	}
 
 	public String getPassword() {
@@ -102,4 +92,12 @@ public class UserModel implements java.io.Serializable{
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		password = passwordEncoder.encode(password);		
 	}
-}
+
+	public ProfilesModel getProfile() {
+		return profile;
+	}
+
+	public void setProfile(ProfilesModel profile) {
+		this.profile = profile;
+	}
+}*/

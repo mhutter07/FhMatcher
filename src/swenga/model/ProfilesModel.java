@@ -1,19 +1,25 @@
 package swenga.model;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
 @Table(name = "profiles")
@@ -37,11 +43,20 @@ public class ProfilesModel implements java.io.Serializable {
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private Date dayOfBirth;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	UserModel profile;
-	
 	@ManyToOne (cascade = CascadeType.PERSIST)
 	private MatchesModel matches;
+	
+	@Column(name = "userName", nullable = false, length = 30)
+	private String userName;
+ 
+	@Column(name = "password", nullable = false, length = 60)
+	private String password;
+ 
+	@Column(name = "enabled", nullable = false)
+	private boolean enabled;
+	
+	@ManyToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+	private Set<UserRoleModel> userRoles;
 	
 	@Version
 	long version;
@@ -51,12 +66,15 @@ public class ProfilesModel implements java.io.Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ProfilesModel(String firstname, String lastname, boolean gender, Date dayOfBirth) {
+	public ProfilesModel(String firstname, String lastname, boolean gender, Date dayOfBirth, String userName, String password, boolean enabled) {
 		super();
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.gender = gender;
 		this.dayOfBirth = dayOfBirth;
+		this.userName = userName;
+		this.password = password;
+		this.enabled = enabled;
 	}
 
 	public int getId() {
@@ -107,13 +125,45 @@ public class ProfilesModel implements java.io.Serializable {
 		this.matches = matches;
 	}
 
-	public UserModel getProfile() {
-		return profile;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setProfile(UserModel profile) {
-		this.profile = profile;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public Set<UserRoleModel> getUserRoles() {
+		return userRoles;
+	}
+
+	public void setUserRoles(Set<UserRoleModel> userRoles) {
+		this.userRoles = userRoles;
+	}
+
+	public void encryptPassword() {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		password = passwordEncoder.encode(password);		
+	}
 	
+	public void addUserRole(UserRoleModel userRole) {
+		if (userRoles==null) userRoles = new HashSet<UserRoleModel>();
+		userRoles.add(userRole);
+	}
 }

@@ -25,7 +25,7 @@ public class UserRoleModel implements java.io.Serializable {
 	private String role;
 	
 	@ManyToMany(mappedBy = "userRoles", fetch = FetchType.LAZY)
-	private Set<UserModel> users;
+	private Set<ProfilesModel> users;
 	
 	public UserRoleModel() {
 		// TODO Auto-generated constructor stub
@@ -44,11 +44,11 @@ public class UserRoleModel implements java.io.Serializable {
 		this.id = id;
 	}
 	
-	public Set<UserModel> getUsers() {
+	public Set<ProfilesModel> getUsers() {
 		return users;
 	}
  
-	public void setUsers(Set<UserModel> users) {
+	public void setUsers(Set<ProfilesModel> users) {
 		this.users = users;
 	}
 

@@ -21,10 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import swenga.dao.ProfileDao;
-import swenga.dao.UserDao;
 import swenga.dao.UserRoleDao;
 import swenga.model.ProfilesModel;
-import swenga.model.UserModel;
 import swenga.model.UserRoleModel;
 
 @Controller
@@ -32,9 +30,6 @@ public class ProfilesController {
 	
 	@Autowired
 	ProfileDao profileDao;
-	
-	@Autowired
-	UserDao userDao;
 	
 	@Autowired
 	UserRoleDao userRoleDao;
@@ -53,15 +48,24 @@ public class ProfilesController {
 	public String fillData(Model model) {
 
 		Date now = new Date();
+		
+		UserRoleModel adminRole = userRoleDao.getRole("ROLE_ADMIN");
+		if (adminRole == null)
+			adminRole = new UserRoleModel("ROLE_ADMIN");
+ 
+		UserRoleModel userRole = userRoleDao.getRole("ROLE_USER");
+		if (userRole == null)
+			userRole = new UserRoleModel("ROLE_USER");
 
-		ProfilesModel p1 = new ProfilesModel("Dominik", "Pagger", false, now);
-		profileDao.persist(p1);
+		ProfilesModel user1 = new ProfilesModel("Dominik", "Pagger", false, now, "domi", "password", true);
+		user1.encryptPassword();
+		user1.addUserRole(userRole);
+		profileDao.persist(user1);
 
-		ProfilesModel p2 = new ProfilesModel("Miriam", "Grainer", true, now);
-		profileDao.persist(p2);
-
-		ProfilesModel p3 = new ProfilesModel("Sebastian", "Kurz", false, now);
-		profileDao.persist(p3);
+		ProfilesModel user2 = new ProfilesModel("Miriam", "Grainer", true, now, "miri", "password", true);
+		user2.encryptPassword();
+		user2.addUserRole(userRole);
+		profileDao.persist(user2);
 
 		return "forward:list";
 	}
@@ -112,7 +116,7 @@ public class ProfilesController {
 			return "forward:list";
 		}
 		
-		List<UserModel> user = userDao.findByUsername(username);
+		List<ProfilesModel> user = profileDao.findByUsername(username);
 		
 		if (CollectionUtils.isEmpty(user)) {
 			
@@ -124,19 +128,16 @@ public class ProfilesController {
 			
 			SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
 			Date birthday = formatDate.parse(dayOfBirth);
-	
-			ProfilesModel profile = new ProfilesModel(firstname, lastname, Boolean.valueOf(gender), birthday);
-			profileDao.persist(profile);
 			
-			UserRoleModel userRole = userRoleDao.getRole("ROLE_USER");
-			if (userRole == null) {
-				userRole = new UserRoleModel("ROLE_USER");
-			}
-				
-			UserModel newUser = new UserModel(username, password, true);
+			UserRoleModel role = userRoleDao.getRole("ROLE_USER");
+					if (role == null) {
+						role = new UserRoleModel("ROLE_USER");
+					}
+					
+			ProfilesModel newUser = new ProfilesModel(firstname, lastname, Boolean.valueOf(gender), birthday, username, password, true);
 			newUser.encryptPassword();
-			newUser.addUserRole(userRole);
-			userDao.persist(newUser);
+			newUser.addUserRole(role);
+			profileDao.merge(newUser);
 			
 			
 			return "forward:list";

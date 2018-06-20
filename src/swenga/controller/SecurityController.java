@@ -1,38 +1,28 @@
 package swenga.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-import java.text.ParseException;
-
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import swenga.dao.UserDao;
+import swenga.dao.ProfileDao;
 import swenga.dao.UserRoleDao;
 import swenga.model.ProfilesModel;
-import swenga.model.UserModel;
 import swenga.model.UserRoleModel;
 
 @Controller
 public class SecurityController {
 	
 	@Autowired
-	UserDao userDao;
+	ProfileDao profileDao;
 	
 	@Autowired
 	UserRoleDao userRoleDao;
+	
 	
 	
 	@RequestMapping("/fillUsers")
@@ -46,17 +36,19 @@ public class SecurityController {
 		UserRoleModel userRole = userRoleDao.getRole("ROLE_USER");
 		if (userRole == null)
 			userRole = new UserRoleModel("ROLE_USER");
+		
+		Date now = new Date();
  
-		UserModel admin = new UserModel("admin", "password", true);
+		ProfilesModel admin = new ProfilesModel("Admin", "Default", true, now, "admin", "password", true);
 		admin.encryptPassword();
 		admin.addUserRole(userRole);
 		admin.addUserRole(adminRole);
-		userDao.persist(admin);
+		profileDao.persist(admin);
  
-		UserModel user = new UserModel("user", "password", true);
+		ProfilesModel user = new ProfilesModel("User", "Default", true, now, "user", "password", true);
 		user.encryptPassword();
 		user.addUserRole(userRole);
-		userDao.persist(user);
+		profileDao.persist(user);
  
 		return "forward:login";
 	}

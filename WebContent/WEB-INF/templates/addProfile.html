@@ -69,7 +69,7 @@
 							<label for="inputUsername" class="col-md-2 control-label">User Name
 							</label>
 							<div class="col-md-10">
-								<input class="form-control" id="inputUsername" type="text" name="username" th:value="${users} ? ${users.username}">
+								<input class="form-control" id="inputUsername" type="text" name="username" th:value="${profiles} ? ${profiles.username}">
 							</div>
 						</div>
 						
@@ -79,7 +79,7 @@
 							<label for="inputPassword" class="col-md-2 control-label">Choose a password
 							</label>
 							<div class="col-md-10">
-								<input class="form-control" id="inputPassword" type="password" name="password" th:value="${users} ? ${users.password}">
+								<input class="form-control" id="inputPassword" type="password" name="password" th:value="${profiles} ? ${profiles.password}">
 							</div>
 						</div>
 
@@ -92,7 +92,6 @@
 								</a>
 							</div>
 						</div>
-
 					</fieldset>
 				</form>
 			</div>
