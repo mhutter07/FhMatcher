@@ -171,6 +171,11 @@ public class ProfilesController {
 				return "/addProfile";
 			}
 			
+			if (username.equals("anonymousUser")) {
+				model.addAttribute("errorMessage", "The username is reserved! Bad Blauensteiner <3");
+				return "/addProfile";
+			}
+			
 			if (password.isEmpty()) {
 				model.addAttribute("errorMessage", "Please enter a valid password!");
 				return "/addProfile";
