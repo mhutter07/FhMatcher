@@ -1,5 +1,6 @@
 package swenga.controller;
 
+import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,6 +10,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import swenga.dao.ProfileDao;
 import swenga.dao.UserRoleDao;
@@ -95,7 +99,6 @@ public class ProfilesController {
 		return "forward:fillMembers";
 	}
 	
-	
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
 	public String profileCall(Model model) {
 		
@@ -107,7 +110,10 @@ public class ProfilesController {
 	
 	@RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
 	public String handleLogin() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth.getName().equals("anonymousUser"))
 		return "login";
+		else return "profile";
 	}
 	
 	@RequestMapping(value = "/addProfile", method = RequestMethod.GET)
