@@ -13,9 +13,7 @@
 		<intercept-url pattern="/addProfile" access="permitAll" />
 		<intercept-url pattern="/fillUsers" access="permitAll" />
 		<intercept-url pattern="/images/**" access="permitAll" />
-
-
-
+		<intercept-url pattern="/profile/*" access="authenticated" />
 		<intercept-url pattern="/addProfile" access="permitAll" />
 
 		<!-- <intercept-url pattern="/**" access="hasRole('USER')" />-->

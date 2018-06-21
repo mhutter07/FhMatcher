@@ -23,6 +23,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -105,13 +106,13 @@ public class ProfilesController {
 		return auth.getName();
 	}
 	
-	@RequestMapping(value = "/profile$*", method = RequestMethod.GET)
-	public String profileCall(Model model) {
+	@RequestMapping(value = "/profile/{name}", method = RequestMethod.GET)
+	public String profileCall(Model model, @PathVariable("name") String name) {
 		
-		List<ProfilesModel> profi = profileDao.requestProfile(getUsername());
+		List<ProfilesModel> profi = profileDao.requestProfile(name);
 		model.addAttribute("profi",profi);
 		
-		return "forward:profile";
+		return "profile";
 	}
 	
 	@Secured("ROLE_ADMIN")
@@ -137,7 +138,7 @@ public class ProfilesController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth.getName().equals("anonymousUser"))
 		return "login";
-		else return "forward:profile$"+ getUsername();
+		else return "forward:profile/" + getUsername();
 	}
 	
 	@RequestMapping(value = "/addProfile", method = RequestMethod.GET)
