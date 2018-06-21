@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+  <title>Edit Profile</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<div class="container" role="main">
+		<div class="page-header">
+			<h1><center><img src="images/FHMatcher.JPG"></center></h1>
+		</div>
+		
+		<!--  Error message ----------------------------------------------------------- -->
+		<div th:unless="${errorMessage} == null" th:utext="${errorMessage}"
+			class="alert alert-danger" role="alert"></div>
+		<!--  Error message ----------------------------------------------------------- -->
+		
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<form class="form-horizontal" th:action="@{/editProfile}" method="post">
+					<fieldset>
+						<legend th:text="${profiles}? 'New profile' : 'Edit profile'">Edit profile</legend>
+
+
+						<!-- --------------  username ---------------- -->
+						
+						<div class="form-group">
+							<label for="inputNewUserName" class="col-md-2 control-label">Enter new User name
+							</label>
+							<div class="col-md-10">
+								<input class="form-control" id="inputNewUserName" type="text" name="username" th:value="${profiles} ? ${profiles.username}">
+							</div>
+						</div>
+						
+						<!-- --------------  old password ---------------- -->
+						
+						<div class="form-group">
+							<label for="inputOldPassword" class="col-md-2 control-label">Enter old password
+							</label>
+							<div class="col-md-10">
+								<input class="form-control" id="inputOldPassword" type="password" name="oldPassword" th:value="${profiles} ? ${profiles.password}">
+							</div>
+						</div>
+						
+						<!-- --------------  new password ---------------- -->
+						
+						<div class="form-group">
+							<label for="inputNewPassword" class="col-md-2 control-label">Choose a new password
+							</label>
+							<div class="col-md-10">
+								<input class="form-control" id="inputNewPassword" type="password" name="newPassword" th:value="${profiles} ? ${profiles.password}">
+							</div>
+						</div>
+						
+						<!-- -------------- confirm password ---------------- -->
+						
+						<div class="form-group">
+							<label for="confirmPassword" class="col-md-2 control-label">Confirm new password
+							</label>
+							<div class="col-md-10">
+								<input class="form-control" id="confirmPassword" type="password" name="confirmPassword" th:value="${profiles} ? ${profiles.password}">
+							</div>
+						</div>
+
+						<!-- --------------  buttons ---------------- -->
+						<div class="form-group">
+							<div class="col-md-10 col-md-offset-2">
+								<button type="submit" class="btn btn-primary">Submit</button>
+								<a href="/FhMatcher/" class="btn btn-default">
+									Cancel
+								</a>
+							</div>
+						</div>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+
+	</div>
+	<!--  End of container -->
+	<div th:include="~{includes/bootstrap :: bootstrapJS}" th:remove="tag" />
+
+</body>
+
+</html>
