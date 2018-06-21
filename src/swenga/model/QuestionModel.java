@@ -26,6 +26,9 @@ public class QuestionModel implements java.io.Serializable {
 	@Column(nullable = false, length = 60)
 	private String description;
 	
+	@ManyToOne (cascade = CascadeType.PERSIST)
+	private AnswersModel answers;
+	
 	@Version
 	long version;
 	
@@ -54,7 +57,13 @@ public class QuestionModel implements java.io.Serializable {
 		this.description = description;
 	}
 	
+	public AnswersModel getAnswers() {
+		return answers;
+	}
 
+	public void setAnswers(AnswersModel answers) {
+		this.answers = answers;
+	}
 	
 	
 

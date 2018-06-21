@@ -32,6 +32,13 @@ public class AnswersModel implements java.io.Serializable {
 	@Column(nullable = false, length = 60)
 	private String answerText;
 	
+	@OneToMany(mappedBy= "answers", fetch=FetchType.EAGER)
+	private Set<ProfilesModel> profiles;
+	
+	@OneToMany(mappedBy= "answers", fetch=FetchType.EAGER)
+	private Set<QuestionModel> questions;
+	
+	
 	@Version
 	long version;
 	
@@ -60,7 +67,28 @@ public class AnswersModel implements java.io.Serializable {
 		this.answerText = answerText;
 	}
 	
+	public Set<ProfilesModel> getProfiles() {
+		return profiles;
+	}
+ 
+	public void setProfiles(Set<ProfilesModel> profiles) {
+		this.profiles = profiles;
+	}
 	
+	public void addProfile(ProfilesModel profile) {
+		if (profiles==null) {
+			profiles= new HashSet<ProfilesModel>();
+		}
+		profiles.add(profile);
+	}
 	
+	public Set<QuestionModel> getQuestions() {
+		return questions;
+	}
+ 
+	public void setQuestions(Set<QuestionModel> questions) {
+		this.questions = questions;
+	}
+
 
 }

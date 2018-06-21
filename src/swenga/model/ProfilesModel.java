@@ -14,7 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -45,6 +47,9 @@ public class ProfilesModel implements java.io.Serializable {
 	
 	@ManyToOne (cascade = CascadeType.PERSIST)
 	private MatchesModel matches;
+	
+	@ManyToOne (cascade = CascadeType.PERSIST)
+	private AnswersModel answers;
 
 	
 	@Column(name = "userName", nullable = false, length = 30)
@@ -166,5 +171,13 @@ public class ProfilesModel implements java.io.Serializable {
 	public void addUserRole(UserRoleModel userRole) {
 		if (userRoles==null) userRoles = new HashSet<UserRoleModel>();
 		userRoles.add(userRole);
+	}
+	
+	public AnswersModel getAnswers() {
+		return answers;
+	}
+
+	public void setAnswers(AnswersModel answers) {
+		this.answers = answers;
 	}
 }
