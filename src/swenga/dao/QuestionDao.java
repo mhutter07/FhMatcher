@@ -5,12 +5,11 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
- 
-import org.springframework.dao.DataAccessException;
+import java.sql.ResultSet;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import swenga.model.ProfilesModel;
 import swenga.model.QuestionModel;
 
 @Repository
@@ -39,12 +38,22 @@ public class QuestionDao {
 		} catch (Exception ex) {
 			return null;
 		}
- 
 	}
 	
 	public void persist(QuestionModel question) {
 		entityManager.persist(question);
 	}
+	
+	public boolean isTableEmpty()
+	   {   
+		TypedQuery<QuestionModel> typedQuery = entityManager.createQuery(
+				"select q from QuestionModel q", QuestionModel.class);
+		List<QuestionModel> typedResultList = typedQuery.getResultList();
+		
+		if(typedResultList.isEmpty()) return true;
+		
+	      return false;   
+	   }
 }
 
 
