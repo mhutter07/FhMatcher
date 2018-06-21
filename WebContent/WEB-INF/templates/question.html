@@ -21,11 +21,18 @@
 	font-size: 20px;
 }
 
-.btn2 {
+.btn {
 	background-color: #B40431;
 	color: white;
-	width: 300px;
+	width: 200px;
 	font-size: 20px;
+	margin-left: 100px;
+	margin-bottom: 100px;
+}
+
+.btn:hover {
+	background-color: #DF013A;
+	color: white;
 }
 
 th {
@@ -45,7 +52,7 @@ th {
 			</h1>
 		</div>
 		
-		<nav th:replace="~{includes/searchNav :: questionList}"></nav>
+		
 
 		<!--  1 simple button ----------------------------------------------------------- -->
 		<div class="row">
@@ -77,7 +84,9 @@ th {
 						
 					</tbody>
 				</table>
-				<a href="profile" class="btn2"> Submit </a>
+				<a href="profile" class="btn"> Submit </a>
+				<a href="profile" class="btn"> Back </a>
+				</br>
 
 			</div>
 		</div>
