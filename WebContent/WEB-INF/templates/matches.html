@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+<title>Your Matches</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	
+<style>
+
+.txt {
+	font-size: 20px;
+}
+
+.btn {
+	background-color: #B40431;
+	color: white;
+	width: 200px;
+	font-size: 20px;
+	margin-left: 100px;
+	margin-bottom: 100px;
+}
+
+.btn:hover {
+	background-color: #DF013A;
+	color: white;
+}
+
+th {
+	font-size: 20px;
+}
+
+</style>
+</head>
+
+<body>
+	<div class="container" role="main">
+		<div class="page-header">
+			<h1>
+				<center>
+					<img src="images/FHMatcher.JPG">
+				</center>
+			</h1>
+		</div>
+		
+		
+
+		<!--  1 simple button ----------------------------------------------------------- -->
+		<div class="row">
+		</div>
+		<!--  1 simple button ----------------------------------------------------------- -->
+
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Day of Birth</th>
+							<th>percentage</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<!--  list all items ----------------------------------------------------------- -->
+						<tr th:each="profile : ${profi}">
+							<td class="txt" th:text="${profiles.firstname}"></td>
+							<td class="txt" th:text="${#calendars.format(profile.dayOfBirth,'dd.MM.yyyy')}"></td>
+							<td><a th:href="@{/profile(username=${profile.username})}" class="btn btn-danger">Show</a></td>
+						</tr>
+						<!--  list all items ----------------------------------------------------------- -->
+						
+					</tbody>
+				</table>
+				<a href="profile" class="btn"> Back </a>
+				</br>
+
+			</div>
+		</div>
+
+	</div>
+	<!--  End of container -->
+	<div th:include="~{includes/bootstrap :: bootstrapJS}" th:remove="tag" />
+
+	<!-- JS for Datetime picker -->
+	<script type="text/javascript"
+		src="http://www.malot.fr/bootstrap-datetimepicker/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+
+
+</body>
+
+</html>

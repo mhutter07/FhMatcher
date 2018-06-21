@@ -142,7 +142,6 @@ public class ProfilesController {
 	
 	@RequestMapping(value = "/addProfile", method = RequestMethod.GET)
 	public String addProfile() {
-		
 		return "addProfile";
 	}
 
@@ -151,6 +150,16 @@ public class ProfilesController {
 		return "forward:fillMembers";
 	}
 	
+	@RequestMapping(value = "/matches", method = RequestMethod.GET)
+	public String matches(Model model) {
+		Date now = new Date();
+		ProfilesModel user1 = new ProfilesModel("Dominik", "Pagger", false, now, "domi", "password", true);
+		profileDao.persist(user1);
+		
+		List<ProfilesModel> profiles = profileDao.getProfiles();
+		model.addAttribute("profiles", profiles);
+		return "matches";
+	}	
 
 	@RequestMapping(value = "/addProfile", method = RequestMethod.POST)
 	public String addProfile(@Valid ProfilesModel newProfilesModel, BindingResult bindingResult, Model model, 
