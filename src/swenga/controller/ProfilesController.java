@@ -108,11 +108,15 @@ public class ProfilesController {
 	
 	@RequestMapping(value = "/profile/{name}", method = RequestMethod.GET)
 	public String profileCall(Model model, @PathVariable("name") String name) {
-		
-		List<ProfilesModel> profi = profileDao.requestProfile(name);
-		model.addAttribute("profi",profi);
-		
-		return "profile";
+		List<ProfilesModel> profi = profileDao.requestProfile(name);		
+		if(!profi.isEmpty()) {
+			model.addAttribute("profi",profi);
+			return "profile";
+		}
+		else {
+			model.addAttribute("errorMessage","Profile does not exist!");
+			return "forward:" + getUsername();
+		}
 	}
 	
 	@Secured("ROLE_ADMIN")

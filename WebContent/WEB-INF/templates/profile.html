@@ -61,6 +61,10 @@
 	text-align: center;
 }
 
+.error{
+	font-size: 24px;
+	text-align: center;
+}
 
 header{
 	height: 100px;
@@ -102,15 +106,18 @@ p {
 
 
 <header>
-	<img class="fhmatch" src="images/FHMatcher.JPG">
-
+		<!--  Error message ----------------------------------------------------------- -->
+		<div class="error"><div th:unless="${errorMessage} == null" th:utext="${errorMessage}"
+			class="alert alert-danger" role="alert"></div></div>
+		<!--  Error message ----------------------------------------------------------- -->
+	<img class="fhmatch" src="/FhMatcher/images/FHMatcher.JPG">
 </header>
 	<nav>
 		<div class="card">
-			<img src="user.jpg" alt="User" style="width: 100%">
+			<img src="/FhMatcher/images/user.jpg" alt="User" style="width: 100%">
 			
+
 			 <tr th:each="profile : ${profi}">
-	  
 		<p class="title">Name: </p>
 		<p class="info"><td th:text=" ${profile.firstname}"></td> <td th:text="${profile.lastname}"></td></p>
 		<p class="title">Gender: </p>
