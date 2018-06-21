@@ -96,15 +96,6 @@ public class ProfilesController {
 		return "admin";
 	}
 	
-	/*@RequestMapping(value = "/profile$*")
-	public String profileCallAgain(Model model) {
-		
-		List<ProfilesModel> profi = profileDao.requestProfile(getUsername());
-		model.addAttribute("profi",profi);
-		
-		return "forward:profile";
-	}*/
-	
 	/*List<ProfilesModel> profiles = profileDao.getProfiles();
 	model.addAttribute("profiles", profiles);*/
 	
@@ -114,19 +105,12 @@ public class ProfilesController {
 	}
 	
 	@RequestMapping(value = "/profile$*", method = RequestMethod.GET)
-	public URI profileCallDown() throws MalformedURLException, URISyntaxException {
+	public String profileCall(Model model) {
 		
-		URL url1 = new URL("http//localhost:8080/FhMatcher/profile$*".toString());
-		URL concatenatedUrl = new URL(url1.toExternalForm() + getUsername());
-		System.out.println(concatenatedUrl);
+		List<ProfilesModel> profi = profileDao.requestProfile(getUsername());
+		model.addAttribute("profi",profi);
 		
-		/*URL url1 = new URL("http://localhost:8080/FhMatcher/profile$");
-		URL url2 = new URL(url1.getUsername());
-		System.out.println(url2);*/
-		
-		
-		
-		return concatenatedUrl.toURI();
+		return "forward:profile";
 	}
 	
 	@Secured("ROLE_ADMIN")
@@ -138,16 +122,10 @@ public class ProfilesController {
 	}
 	
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
-	public String profileCall(Model model) {
-		
-		List<ProfilesModel> profiles = profileDao.getProfiles();
-		model.addAttribute("profiles", profiles);
+	public String profileCallSelf(Model model) {
 		
 		List<ProfilesModel> profi = profileDao.requestProfile(getUsername());
 		model.addAttribute("profi",profi);
-
-		
-		//model.addAttribute("profi", profileDao.getName(firstname));
 		
 		return "profile";
 	}
@@ -158,7 +136,7 @@ public class ProfilesController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth.getName().equals("anonymousUser"))
 		return "login";
-		else return "profile";
+		else return "forward:profile$"+ getUsername();
 	}
 	
 	@RequestMapping(value = "/addProfile", method = RequestMethod.GET)
