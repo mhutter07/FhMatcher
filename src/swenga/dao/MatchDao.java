@@ -15,5 +15,16 @@ import swenga.model.MatchesModel;
 @Repository
 @Transactional
 public class MatchDao {
+	
+	@PersistenceContext
+	protected EntityManager entityManager;
+ 
+	public List<MatchesModel> getMatches() {
+ 
+		TypedQuery<MatchesModel> typedQuery = entityManager.createQuery(
+				"select m from MatchesModel m", MatchesModel.class);
+		List<MatchesModel> typedResultList = typedQuery.getResultList();
+		return typedResultList;
+	}
 
 }

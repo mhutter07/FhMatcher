@@ -16,6 +16,17 @@ import swenga.model.AnswersModel;
 @Transactional
 public class AnswerDao {
 	
+	@PersistenceContext
+	protected EntityManager entityManager;
+ 
+	public List<AnswersModel> getAnswers() {
+ 
+		TypedQuery<AnswersModel> typedQuery = entityManager.createQuery(
+				"select a from AnswersModel a", AnswersModel.class);
+		List<AnswersModel> typedResultList = typedQuery.getResultList();
+		return typedResultList;
+	}
+	
 
 
 }
