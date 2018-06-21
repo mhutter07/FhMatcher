@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import swenga.model.ProfilesModel;
+import swenga.model.QuestionModel;
 
 @Repository
 @Transactional
@@ -87,8 +88,16 @@ public class ProfileDao {
 		entityManager.persist(user);
 	}
 	
-
-	
+	public boolean isTableEmpty()
+	   {   
+		TypedQuery<QuestionModel> typedQuery = entityManager.createQuery(
+				"select q from ProfilesModel q", QuestionModel.class);
+		List<QuestionModel> typedResultList = typedQuery.getResultList();
+		
+		if(typedResultList.isEmpty()) return true;
+		
+	      return false;   
+	   }
 }
 
 
