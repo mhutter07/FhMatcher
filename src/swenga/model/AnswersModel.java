@@ -1,22 +1,28 @@
 package swenga.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "questions")
+@Table(name = "answers")
 
-public class QuestionModel implements java.io.Serializable {
+public class AnswersModel implements java.io.Serializable {
 	
 	@Id
 	@Column(name = "id")
@@ -24,18 +30,18 @@ public class QuestionModel implements java.io.Serializable {
 	private int id;
 	
 	@Column(nullable = false, length = 60)
-	private String description;
+	private String answerText;
 	
 	@Version
 	long version;
 	
-	public QuestionModel() {
+	public AnswersModel() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public QuestionModel(String description) {
+	public AnswersModel(String answerText) {
 		super();
-		this.description = description;
+		this.answerText = answerText;
 	}
 
 	public int getId() {
@@ -46,15 +52,14 @@ public class QuestionModel implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getAnswerText() {
+		return answerText;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setAnswerText(String answerText) {
+		this.answerText = answerText;
 	}
 	
-
 	
 	
 

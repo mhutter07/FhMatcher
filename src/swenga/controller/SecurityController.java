@@ -39,6 +39,7 @@ public class SecurityController {
 		
 		Date now = new Date();
  
+		if(profileDao.isTableEmpty()) {
 		ProfilesModel admin = new ProfilesModel("Admin", "Default", true, now, "admin", "password", true);
 		admin.encryptPassword();
 		admin.addUserRole(userRole);
@@ -49,7 +50,7 @@ public class SecurityController {
 		user.encryptPassword();
 		user.addUserRole(userRole);
 		profileDao.persist(user);
- 
+		}
 		return "forward:login";
 	}
 	

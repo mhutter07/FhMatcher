@@ -76,6 +76,7 @@ public class ProfilesController {
 		if (userRole == null)
 			userRole = new UserRoleModel("ROLE_USER");
 
+		if(profileDao.isTableEmpty()) {
 		ProfilesModel user1 = new ProfilesModel("Dominik", "Pagger", false, now, "domi", "password", true);
 		user1.encryptPassword();
 		user1.addUserRole(userRole);
@@ -85,7 +86,7 @@ public class ProfilesController {
 		user2.encryptPassword();
 		user2.addUserRole(userRole);
 		profileDao.persist(user2);
-
+		}
 		return "forward:fillMembers";
 	}
 	

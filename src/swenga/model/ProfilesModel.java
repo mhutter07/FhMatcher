@@ -45,6 +45,7 @@ public class ProfilesModel implements java.io.Serializable {
 	
 	@ManyToOne (cascade = CascadeType.PERSIST)
 	private MatchesModel matches;
+
 	
 	@Column(name = "userName", nullable = false, length = 30)
 	private String userName;
