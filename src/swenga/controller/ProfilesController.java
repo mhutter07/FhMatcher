@@ -5,6 +5,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import javax.validation.Valid;
 
@@ -23,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 
 import swenga.dao.ProfileDao;
 import swenga.dao.UserRoleDao;
@@ -91,15 +96,14 @@ public class ProfilesController {
 		return "admin";
 	}
 	
-	@RequestMapping(value = "/profile$*")
+	/*@RequestMapping(value = "/profile$*")
 	public String profileCallAgain(Model model) {
 		
 		List<ProfilesModel> profi = profileDao.requestProfile(getUsername());
 		model.addAttribute("profi",profi);
-		System.out.println(profi);
 		
 		return "forward:profile";
-	}
+	}*/
 	
 	/*List<ProfilesModel> profiles = profileDao.getProfiles();
 	model.addAttribute("profiles", profiles);*/
@@ -109,9 +113,20 @@ public class ProfilesController {
 		return auth.getName();
 	}
 	
-	@RequestMapping(value = "/profile$", method = RequestMethod.GET)
-	public String profileCallDown() {
-		return "/profile$"+getUsername();
+	@RequestMapping(value = "/profile$*", method = RequestMethod.GET)
+	public URI profileCallDown() throws MalformedURLException, URISyntaxException {
+		
+		URL url1 = new URL("http//localhost:8080/FhMatcher/profile$*".toString());
+		URL concatenatedUrl = new URL(url1.toExternalForm() + getUsername());
+		System.out.println(concatenatedUrl);
+		
+		/*URL url1 = new URL("http://localhost:8080/FhMatcher/profile$");
+		URL url2 = new URL(url1.getUsername());
+		System.out.println(url2);*/
+		
+		
+		
+		return concatenatedUrl.toURI();
 	}
 	
 	@Secured("ROLE_ADMIN")
@@ -127,6 +142,9 @@ public class ProfilesController {
 		
 		List<ProfilesModel> profiles = profileDao.getProfiles();
 		model.addAttribute("profiles", profiles);
+		
+		List<ProfilesModel> profi = profileDao.requestProfile(getUsername());
+		model.addAttribute("profi",profi);
 
 		
 		//model.addAttribute("profi", profileDao.getName(firstname));
@@ -151,7 +169,7 @@ public class ProfilesController {
 
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public String admin() {
-		return "admin";
+		return "forward:fillMembers";
 	}
 	
 
