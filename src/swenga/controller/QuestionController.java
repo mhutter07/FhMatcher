@@ -1,6 +1,7 @@
 package swenga.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -19,6 +20,7 @@ import swenga.dao.AnswerDao;
 import swenga.dao.ProfileDao;
 import swenga.dao.QuestionDao;
 import swenga.model.AnswersModel;
+import swenga.model.ProfilesModel;
 import swenga.model.QuestionModel;
 
 @Controller
@@ -26,10 +28,10 @@ public class QuestionController {
 
 	@Autowired
 	QuestionDao questionDao;
-	
+
 	@Autowired
 	AnswerDao answerDao;
-	
+
 	@Autowired
 	ProfileDao profileDao;
 
@@ -37,13 +39,13 @@ public class QuestionController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		return auth.getName();
 	}
-	
+
 	@RequestMapping(value = "/questionNext{questionVal}", method = { RequestMethod.GET, RequestMethod.POST })
 	public String question(Model model, @PathVariable("questionVal") int questionVal) {
 		int questionAtm = questionVal + 1;
-		
+
 		if (questionAtm == 9) {
-			return "redirect:/profile/"+getUsername();
+			return "redirect:/profile/" + getUsername();
 		} else {
 			QuestionModel question = questionDao.getQuestionByID(questionAtm);
 			model.addAttribute("question", question);
@@ -52,7 +54,7 @@ public class QuestionController {
 			return "question";
 		}
 	}
-	
+
 	@RequestMapping(value = "/question", method = { RequestMethod.GET, RequestMethod.POST })
 	public String question(Model model) {
 		int questionAtm = 1;
@@ -61,30 +63,70 @@ public class QuestionController {
 		model.addAttribute("questionAtm", questionAtm);
 		return "question";
 	}
-	
+
 	@RequestMapping("/fillAnswers")
-	public String fillAnswers(Principal principal,Model model, @RequestParam("answer") String answer, @RequestParam("questionVal") int questionID) {
-		
-		principal.getName();
+	public String fillAnswers(Model model, @RequestParam("answer") String answer,
+			@RequestParam("questionVal") int questionID) {
 		AnswersModel a1 = new AnswersModel(Boolean.valueOf(answer));
 		a1.setProfiles(profileDao.getProfileByUsername(getUsername()));
-	    a1.setQuestions(questionDao.getQuestionByID(questionID));
+		a1.setQuestions(questionDao.getQuestionByID(questionID));
 		answerDao.merge(a1);
-		System.out.println(profileDao.getProfileByUsername(getUsername()).getId());
-		System.out.println(questionDao.getQuestionByID(questionID).getDescription());
-		return "forward:/questionNext"+questionID;
+		return "forward:/questionNext" + questionID;
 	}
-	
+
 	@RequestMapping("/dropAnswers")
 	public String dropAnswers() {
 		Set<AnswersModel> answers = profileDao.getProfileByUsername(getUsername()).getAnswers();
 		profileDao.getProfileByUsername(getUsername()).setAnswers(null);
-		for(AnswersModel answer : answers) {
+		for (AnswersModel answer : answers) {
 			answerDao.deleteQuestionWithId(answer.getId());
 		}
 		return "redirect:/fillQuestions";
 	}
-	
+
+	@RequestMapping(value = "/matches", method = RequestMethod.GET)
+	public String matches(Model model) {
+		
+		if (profileDao.getProfileByUsername(getUsername()).getAnswers().isEmpty()) {
+			model.addAttribute("errorMessage", "Please answer our questionnaire first!");
+			return "forward:profile";
+		}
+		List<Float> percentages = new ArrayList<Float>();
+		for (ProfilesModel profile : profileDao.getProfiles()) {
+			Set<AnswersModel> answersOwn = profileDao.getProfileByUsername(getUsername()).getAnswers();
+			Set<AnswersModel> answersMatch = profile.getAnswers();
+			List<AnswersModel> answersOwnList = new ArrayList<AnswersModel>(answersOwn);
+			List<AnswersModel> answersMatchList = new ArrayList<AnswersModel>(answersMatch);
+			int questionPosition = 0;
+			int matchCounter = 0;
+			int minimumAnswered = 0;
+			if (answersOwnList.size() < answersMatchList.size())
+				minimumAnswered = answersOwnList.size();
+			else
+				minimumAnswered = answersMatchList.size();
+			while (questionPosition < minimumAnswered) {
+				if (answersOwnList.get(questionPosition).isAnswer() && answersMatchList.get(questionPosition).isAnswer()) {
+					matchCounter = matchCounter + 1;
+				}
+				questionPosition = questionPosition + 1;
+			}
+			float percentage = (matchCounter / answersOwnList.size()) * 100;
+			percentages.add(percentage);
+		}
+		model.addAttribute("profiles", profileDao.getProfiles());
+		model.addAttribute("percentages", percentages);
+		return "matches";
+	}
+
+	/*
+	 * @RequestMapping(value = "/matches", method = RequestMethod.GET) public String
+	 * matches(Model model) { List<ProfilesModel> profiles =
+	 * profileDao.findByUsername(getUsername()); int percentage = 95;
+	 * System.out.println(profileDao.getProfileByUsername(getUsername()).getAnswers(
+	 * )); model.addAttribute("profiles",profiles); model.addAttribute("percentage",
+	 * percentage); return "matches"; }
+	 */
+
 	@RequestMapping("/fillQuestions")
 	@Transactional
 	public String fillQuestions(Model model) {

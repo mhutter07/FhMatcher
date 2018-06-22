@@ -52,7 +52,10 @@ th {
 			</h1>
 		</div>
 		
-		
+		<!--  Error message ----------------------------------------------------------- -->
+		<div th:unless="${errorMessage} == null" th:utext="${errorMessage}"
+			class="alert alert-danger" role="alert"></div>
+		<!--  Error message ----------------------------------------------------------- -->
 
 		<!--  1 simple button ----------------------------------------------------------- -->
 		<div class="row">
@@ -68,18 +71,35 @@ th {
 							<th>Name</th>
 							<th>Day of Birth</th>
 							<th>percentage</th>
-
 						</tr>
 					</thead>
 					<tbody>
 						<!--  list all items ----------------------------------------------------------- -->
-						<tr th:each="profile : ${profi}">
-							<td class="txt" th:text="${profiles.firstname}"></td>
+						
+						<tr th:each="profile : ${profiles}">
+							<td class="txt" th:text="${profile.firstname}"></td>
 							<td class="txt" th:text="${#calendars.format(profile.dayOfBirth,'dd.MM.yyyy')}"></td>
-							<td><a th:href="@{/profile(username=${profile.username})}" class="btn btn-danger">Show</a></td>
-							
+							<td class="txt"th:text="${percentages.get(profile.id-1)}"></td>
+							<td><a th:href="@{/profileForward(username=${profile.userName})}" class="btn btn-danger">Show</a></td>
+						</tr>	
+					
+						
+						
+						
+						<!--  list all items
+						<tr class="tab" th:each="profile : ${profiles}">
+							<td class="txt" th:text="${profile.firstname}"></td>
+							<td class="txt" th:text="${#calendars.format(profile.dayOfBirth,'dd.MM.yyyy')}"></td>
 						</tr>
-						<!--  list all items ----------------------------------------------------------- -->
+
+						<tr class="tab" th:each="percentage : ${percentages}">
+							<td class="txt" th:text="${percentage}"></td>
+						</tr>
+
+						<tr class="tab" th:each="profile : ${profiles}">
+							<td><a th:href="@{/profile/(username=${profile.userName})}" class="btn btn-danger">Show</a></td>
+						</tr>
+						 ----------------------------------------------------------- -->
 						
 					</tbody>
 				</table>

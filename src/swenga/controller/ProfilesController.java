@@ -131,6 +131,19 @@ public class ProfilesController {
 		}
 	}
 	
+	@RequestMapping(value= "/profileForward", method = RequestMethod.GET)
+	public String profileForward(Model model, @RequestParam("username") String name) {
+		List<ProfilesModel> profi = profileDao.requestProfile(name);		
+		if(!profi.isEmpty()) {
+			model.addAttribute("profi",profi);
+			return "profile";
+		}
+		else {
+			model.addAttribute("errorMessage","Profile does not exist!");
+			return "matches";
+		}
+	}
+	
 	@Secured("ROLE_ADMIN")
 	@RequestMapping("/delete")
 	public String deleteData(Model model, @RequestParam int id) {
@@ -161,17 +174,6 @@ public class ProfilesController {
 	public String admin() {
 		return "forward:fillMembers";
 	}
-	
-	@RequestMapping(value = "/matches", method = RequestMethod.GET)
-	public String matches(Model model) {
-		Date now = new Date();
-		ProfilesModel user1 = new ProfilesModel("Dominik", "Pagger", false, now, "domi", "password", true);
-		profileDao.persist(user1);
-		
-		List<ProfilesModel> profiles = profileDao.getProfiles();
-		model.addAttribute("profiles", profiles);
-		return "matches";
-	}	
 
 	@RequestMapping(value = "/addProfile", method = RequestMethod.GET)
 	public String addProfile() {
