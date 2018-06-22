@@ -398,7 +398,7 @@ public class ProfilesController {
 	}
 	
 	@RequestMapping("/download")
-	public void download(@RequestParam("documentId") int documentId, HttpServletResponse response) {
+	public void download(@RequestParam("id") int documentId, HttpServletResponse response) {
 		
 		Optional<DocumentModel> docOpt = documentRepository.findById(documentId);
 		if (!docOpt.isPresent()) throw new IllegalArgumentException("No document with id "+documentId);

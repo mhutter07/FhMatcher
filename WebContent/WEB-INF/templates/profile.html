@@ -118,8 +118,8 @@ p {
 			<tr th:each="profile : ${profi}">
 			<p th:if="${profile.document != null}">
 			
-			<a th:href="@{/download(documentId=${document.id})}"> 
-			<img th:src="@{/download(documentId=${document.id})}">
+			<a th:href="@{/download(id=${document.id})}"> 
+			<img th:src="@{/download(id=${document.id})}" onerror="this.src='../resources/default.jpg'">
 			</a>
 			<p th:unless="${profile.document != null}"><img src="/FhMatcher/images/user.jpg" alt="User" style="width: 100%"></p></tr>
 			
