@@ -40,6 +40,19 @@ public class QuestionDao {
 		}
 	}
 	
+	public QuestionModel getQuestionByID(int id) {
+		try {
+			TypedQuery<QuestionModel> typedQuery = entityManager.createQuery(
+					"select q from QuestionModel q where q.id = :id",
+					QuestionModel.class);
+			typedQuery.setParameter("id", id);
+			QuestionModel question = typedQuery.getSingleResult();
+			return question;
+		} catch (Exception ex) {
+			return null;
+		}
+	}
+	
 	public void persist(QuestionModel question) {
 		entityManager.persist(question);
 	}
