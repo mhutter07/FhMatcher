@@ -92,4 +92,9 @@ public class DocumentModel implements java.io.Serializable {
 		this.created = created;
 	}
 
+	public void add(DocumentModel document) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

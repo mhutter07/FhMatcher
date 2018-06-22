@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.io.OutputStream;
 
-//import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +40,7 @@ import swenga.model.UserRoleModel;
 import swenga.jpa.dao.DocumentRepo;
 import swenga.model.DocumentModel;
 import swenga.jpa.dao.ProfileRepo;
+import swenga.model.QuestionModel;
 
 @Controller
 public class ProfilesController {
@@ -380,11 +381,11 @@ public class ProfilesController {
 			ProfilesModel profile = profileOpt.get();
 			
 			//Already a document available -> delete it
-			if (profile.getDocument() != null) {
+			/*if (profile.getDocument() != null) {
 				documentRepository.delete(profile.getDocument());
 				//remove relationship
 				profile.setDocument(null);
-			}
+			}*/
 			
 			//Create new Document with all infos
 			DocumentModel document = new DocumentModel();
@@ -426,6 +427,30 @@ public class ProfilesController {
 		}
 
 	}
+	
+	@RequestMapping("/profile/image")
+	public void downloadImage(@RequestParam("id") int profileId, HttpServletResponse response) {
+		
+		Optional<ProfilesModel> profileOpt = profileRepository.findById(profileId);
+		if (!profileOpt.isPresent())
+			throw new IllegalArgumentException("No profile with id " + profileId);
+		
+		ProfilesModel profile = profileOpt.get();
+		
+		List<DocumentModel> docOpt = documentRepository.findAllByName(profile);
+		DocumentModel doc = docOpt.get(0);
+		
+		try {
+			
+			OutputStream out = response.getOutputStream();
+			response.setContentType(doc.getContentType());
+			out.write(doc.getContent());
+			out.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 
 	
 	// nach klick auf "Upload" Button , Verweis auf die Seite -> http://localhost:8080/FhMatcher/upload?id=46
@@ -440,7 +465,7 @@ public class ProfilesController {
 			return "fillQuestions";
 
 	}
-*/
+
 	/*@ExceptionHandler(Exception.class)
 	public String handleAllException(Exception ex) {
 

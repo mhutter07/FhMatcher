@@ -135,11 +135,13 @@ p {
 			<tr th:each="profile : ${profi}">
 			<p th:if="${profile.document != null}">
 			
-			<a th:href="@{/profile/{name}(id=${profile.id})}"> 
-			<img th:src="@{/profile/{name}(id=${profile.id})}">
+			<a th:href="@{/profile/image(id=${profile.id})}"> 
+			<img th:src="@{/profile/image(id=${profile.id})}" style="width: 100%">
 			</a>
-			<p th:unless="${profile.document != null}"><img src="/FhMatcher/images/user.jpg" alt="User" style="width: 100%"></p></tr>
-
+			<p th:unless="${profile.document != null}"><img src="/FhMatcher/images/user.jpg" alt="User" style="width: 100%"></p>
+			</tr>
+			
+		
 		<tr th:each="profile : ${profi}">
    		<a th:href="@{upload(id=${profile.id})}" class="btn btnUpload"/> Upload </a>
    		 </tr>
