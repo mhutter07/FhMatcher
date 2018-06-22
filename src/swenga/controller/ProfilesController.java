@@ -410,6 +410,11 @@ public class ProfilesController {
 		return "redirect:/profile/"+getUsername();
 	}
 
+/*
+	@RequestMapping("profile/imageUp")
+	public void download(@RequestParam("id") int documentId, HttpServletResponse response) {
+
+
 	
 	@RequestMapping("/profile/imageUp")
 	public void download(@RequestParam("documentId") int documentId, HttpServletResponse response) {
