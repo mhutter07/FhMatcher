@@ -1,16 +1,69 @@
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Error Page</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+
+.txt {
+	padding-left: 15%;
+	font-size: 20px;
+}
+
+.btn {
+	background-color: #B40431;
+	color: white;
+	width: 200px;
+	font-size: 20px;
+	margin: 30px;
+}
+
+.btn:hover {
+	background-color: #DF013A;
+	color: white;
+}
+
+</style>
 </head>
-<body>
-	<h1>Error</h1>
-	Exception: <span th:text="${#request.getAttribute('javax.servlet.error.exception')}"></span><br/>
-	Status Code: <span th:text="${#request.getAttribute('javax.servlet.error.status_code')}"></span><br/>
-	Request-URI: <span th:text="${#request.getAttribute('javax.servlet.error.request_uri')}"></span><br/>
-	Servlet Name: <span th:text="${#request.getAttribute('javax.servlet.error.servlet_name')}"></span><br/>
-	<a href="./">back</a>
+	<div class="container" role="main">
+		<div class="page-header">
+			<h1>
+				<center>
+					<img src="images/FHMatcher_error.jpg">
+				</center>
+			</h1>
+		</div>
+		
+			<div class="txt">
+
+				<h1>Error</h1>
+				Exception: <span th:text="${#request.getAttribute('javax.servlet.error.exception')}"></span><br/>
+				Status Code: <span th:text="${#request.getAttribute('javax.servlet.error.status_code')}"></span><br/>
+				Request-URI: <span th:text="${#request.getAttribute('javax.servlet.error.request_uri')}"></span><br/>
+				Servlet Name: <span th:text="${#request.getAttribute('javax.servlet.error.servlet_name')}"></span><br/>
+				<a href="./" class="btn">Back</a>
+			</div>
+		</div>
+
+	</div>
+	<!--  End of container -->
+	<div th:include="~{includes/bootstrap :: bootstrapJS}" th:remove="tag" />
+
+	<!-- JS for Datetime picker -->
+	<script type="text/javascript"
+		src="http://www.malot.fr/bootstrap-datetimepicker/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+
 </body>
 </html>
+

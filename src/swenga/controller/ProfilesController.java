@@ -364,7 +364,9 @@ public class ProfilesController {
 	
 	@RequestMapping(value = "/upload", method = RequestMethod.GET)
 	public String showUploadForm(Model model, @RequestParam ("id") int profileId) {
+		String user = getUsername();
 		model.addAttribute("profileId", profileId);
+		model.addAttribute("user", user);
 		return "uploadFile";
 	}
 	
@@ -405,10 +407,14 @@ public class ProfilesController {
 		return "redirect:/profile/"+getUsername();
 	}
 
-	
 
 	@RequestMapping("profile/imageUp")
 	public void download(@RequestParam("id") int documentId, HttpServletResponse response) {
+
+
+	
+/*	@RequestMapping("/download")
+	public void download(@RequestParam("documentId") int documentId, HttpServletResponse response) {
 
 		
 		Optional<DocumentModel> docOpt = documentRepository.findById(documentId);
