@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+<title>Forum</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<style>
+.txt {
+	margin-top: 50px;
+	font-size: 20px;
+}
+
+.btn {
+	background-color: #B40431;
+	color: white;
+	width: 200px;
+	font-size: 20px;
+	margin: 100px 0 100px 100px;
+}
+
+.btn:hover {
+	background-color: #DF013A;
+	color: white;
+}
+
+</style>
+</head>
+
+<body>
+	<div class="container" role="main">
+		<div class="page-header">
+			<h1>
+				<center>
+					<img src="/FhMatcher/images/FHMatcher.JPG">
+							<!--  Error message ----------------------------------------------------------- -->
+		<div th:unless="${errorMessage} == null" th:utext="${errorMessage}"
+			class="alert alert-danger" role="alert"></div>
+		<!--  Error message ----------------------------------------------------------- -->
+		
+				</center>
+			</h1>
+		</div>
+
+		<!--  1 simple button ----------------------------------------------------------- -->
+		<div class="row"></div>
+		<!--  1 simple button ----------------------------------------------------------- -->
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<h1><strong th:text="${post.header}"></strong></h1>
+				<div th:text="${post.user}"></div>
+				<div class="row"></div>
+				<div class="txt" th:text="${post.text}"></div>
+				<a href="/FhMatcher/forum" class="btn">Back to Forum</a>
+				<a href="/FhMatcher/profile" class="btn">Back to Profile</a>
+			</div>
+		</div>
+
+	</div>
+	<!--  End of container -->
+	<div th:include="~{includes/bootstrap :: bootstrapJS}" th:remove="tag" />
+
+	<!-- JS for Datetime picker -->
+	<script type="text/javascript"
+		src="http://www.malot.fr/bootstrap-datetimepicker/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+
+
+</body>
+
+</html>
