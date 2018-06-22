@@ -155,11 +155,6 @@ public class ProfilesController {
 		else return "forward:profile/" + getUsername();
 	}
 	
-	@RequestMapping(value = "/addProfile", method = RequestMethod.GET)
-	public String addProfile() {
-		return "addProfile";
-	}
-
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public String admin() {
 		return "forward:fillMembers";
@@ -176,6 +171,11 @@ public class ProfilesController {
 		return "matches";
 	}	
 
+	@RequestMapping(value = "/addProfile", method = RequestMethod.GET)
+	public String addProfile() {
+		return "addProfile";
+	}
+	
 	@RequestMapping(value = "/addProfile", method = RequestMethod.POST)
 	public String addProfile(@Valid ProfilesModel newProfilesModel, BindingResult bindingResult, Model model, 
 			@RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname, @RequestParam("gender") String gender,
@@ -395,15 +395,25 @@ public class ProfilesController {
 	
 	// nach klick auf "Upload" Button , Verweis auf die Seite -> http://localhost:8080/FhMatcher/upload?id=46
 	
+	
+	/*@RequestMapping(value = "/addQuestions", method = RequestMethod.POST)
+	public String addQuestions(@Valid ProfilesModel newProfilesModel, BindingResult bindingResult, Model model, 
+			@RequestParam("question") QuestionModel questionID) {
+	
+			System.out.println(questionID);
+			
+			return "fillQuestions";
 
-
+	}
+*/
 	/*@ExceptionHandler(Exception.class)
 	public String handleAllException(Exception ex) {
 
 		return "error";
 
+<<<<<<< Updated upstream
 	}*/
 	
-
-
 }
+
+

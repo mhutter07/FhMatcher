@@ -55,7 +55,7 @@ public class ProfilesModel implements java.io.Serializable {
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private DocumentModel document;
-	
+
 	@Column(name = "userName", nullable = false, length = 30)
 	private String userName;
  
