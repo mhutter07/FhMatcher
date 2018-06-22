@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.io.OutputStream;
 
-import javax.servlet.http.HttpServletResponse;
+//import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -404,6 +404,7 @@ public class ProfilesController {
 		
 		return "redirect:/profile/"+getUsername();
 	}
+
 	
 
 	@RequestMapping("profile/imageUp")
@@ -428,6 +429,7 @@ public class ProfilesController {
 
 	}
 	
+
 	@RequestMapping("/profile/image")
 	public void downloadImage(@RequestParam("id") int profileId, HttpServletResponse response) {
 		
@@ -451,6 +453,7 @@ public class ProfilesController {
 		}
 
 	}
+
 
 	
 	// nach klick auf "Upload" Button , Verweis auf die Seite -> http://localhost:8080/FhMatcher/upload?id=46
