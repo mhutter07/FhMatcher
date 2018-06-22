@@ -52,13 +52,9 @@ public class ProfilesModel implements java.io.Serializable {
 	
 	@ManyToOne (cascade = CascadeType.PERSIST)
 	private AnswersModel answers;
-<<<<<<< Updated upstream
-=======
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private DocumentModel document;
-
->>>>>>> Stashed changes
 	
 	@Column(name = "userName", nullable = false, length = 30)
 	private String userName;
