@@ -5,6 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:util="http://www.springframework.org/schema/util"
 	xmlns:sec="http://www.springframework.org/schema/security"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
 
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/aop 
@@ -20,7 +21,10 @@
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/security 
-		http://www.springframework.org/schema/security/spring-security.xsd">
+		http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/data/jpa
+	    http://www.springframework.org/schema/data/jpa/spring-jpa.xsd"
+		>
 
 
 	<!-- Read settings from external file and replace all ${...} in the xml -->
@@ -30,6 +34,7 @@
 
 	<!-- - POJOs labeled with the @Controller and @Service annotations are auto-detected. -->
 	<context:component-scan base-package="swenga" />
+	<jpa:repositories base-package="swenga" />
 
 	<!-- JSR-303/JSR-349 support will be detected on classpath and enabled automatically -->
 	<mvc:annotation-driven />
@@ -69,9 +74,6 @@
 	</bean>
 
 
-	
-
-
 	<bean
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
 		id="entityManagerFactory">
@@ -91,6 +93,7 @@
 			</props>
 		</property>
 	</bean>
+	
 
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
@@ -98,4 +101,7 @@
 	<tx:annotation-driven />
 	<bean id="persistenceExceptionTranslationPostProcessor"
 		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+ 
+		
+	
 </beans>

@@ -1,6 +1,7 @@
 package swenga.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -100,6 +101,16 @@ public class ProfileDao {
 		
 	      return false;   
 	   }
+
+	public Optional<ProfilesModel> findById(int profileId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void save(ProfilesModel profile) {
+		// TODO Auto-generated method stub
+		
+	}
 }
 
 

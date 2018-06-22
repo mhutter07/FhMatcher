@@ -5,6 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import java.util.Optional;
+import java.io.OutputStream;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +26,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+<<<<<<< Updated upstream
+=======
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+>>>>>>> Stashed changes
 
 import swenga.dao.ProfileDao;
 import swenga.dao.UserRoleDao;
 import swenga.model.ProfilesModel;
 import swenga.model.UserRoleModel;
+import swenga.jpa.dao.DocumentRepo;
+import swenga.model.DocumentModel;
+import swenga.jpa.dao.ProfileRepo;
 
 @Controller
 public class ProfilesController {
@@ -37,6 +49,12 @@ public class ProfilesController {
 	
 	@Autowired
 	UserRoleDao userRoleDao;
+	
+	@Autowired
+	DocumentRepo documentRepository;
+	
+	@Autowired
+	ProfileRepo profileRepository;
 	
 	@RequestMapping(value = { "list" })
 	public String index(Model model) {
@@ -328,12 +346,65 @@ public class ProfilesController {
 	}
 	
 
-	@ExceptionHandler(Exception.class)
+	/**
+	 * Display the upload form
+	 * @param model
+	 * @param profileId
+	 * @return
+	 */
+	
+	@RequestMapping(value = "/upload", method = RequestMethod.GET)
+	public String showUploadForm(Model model, @RequestParam ("id") int profileId) {
+		model.addAttribute("profileId", profileId);
+		return "uploadFile";
+	}
+	
+	
+	@RequestMapping(value = "/upload", method = RequestMethod.POST)
+	public String uploadDocument(Model model, @RequestParam("id") int profileId,
+			@RequestParam("myFile") MultipartFile file) {
+		
+		try {
+			
+			Optional<ProfilesModel> profileOpt = profileDao.findById(profileId);
+			if (!profileOpt.isPresent()) throw new IllegalArgumentException("No user with id"+profileId);
+			
+			ProfilesModel profile = profileOpt.get();
+			
+			//Already a document available -> delete it
+			if (profile.getDocument() != null) {
+				documentRepository.delete(profile.getDocument());
+				//remove relationship
+				profile.setDocument(null);
+			}
+			
+			//Create new Document with all infos
+			DocumentModel document = new DocumentModel();
+			document.setContent(file.getBytes());
+			document.setContentType(file.getContentType());
+			document.setCreated(new Date());
+			document.setFilename(file.getOriginalFilename());
+			document.setName(file.getName());
+			profile.setDocument(document);
+			profileRepository.save(profile);
+		} catch (Exception ex) {
+			model.addAttribute("errorMessage","Error:" + ex.getMessage());
+		}
+		
+		return "profile";
+	}
+	
+	// nach klick auf "Upload" Button , Verweis auf die Seite -> http://localhost:8080/FhMatcher/upload?id=46
+	
+	
+>>>>>>> Stashed changes
+
+	/*@ExceptionHandler(Exception.class)
 	public String handleAllException(Exception ex) {
 
 		return "error";
 
-	}
+	}*/
 	
 
 

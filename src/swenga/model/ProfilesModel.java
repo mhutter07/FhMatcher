@@ -23,6 +23,8 @@ import javax.persistence.Version;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+
+
 @Entity
 @Table(name = "profiles")
 
@@ -50,6 +52,13 @@ public class ProfilesModel implements java.io.Serializable {
 	
 	@ManyToOne (cascade = CascadeType.PERSIST)
 	private AnswersModel answers;
+<<<<<<< Updated upstream
+=======
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	private DocumentModel document;
+
+>>>>>>> Stashed changes
 	
 	@Column(name = "userName", nullable = false, length = 30)
 	private String userName;
@@ -178,5 +187,13 @@ public class ProfilesModel implements java.io.Serializable {
 
 	public void setAnswers(AnswersModel answers) {
 		this.answers = answers;
+	}
+	
+	public DocumentModel getDocument() {
+		return document;
+	}
+ 
+	public void setDocument(DocumentModel document) {
+		this.document = document;
 	}
 }
