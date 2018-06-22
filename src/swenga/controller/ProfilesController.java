@@ -409,7 +409,7 @@ public class ProfilesController {
 		return "redirect:/profile/"+getUsername();
 	}
 	
-	@RequestMapping("/download")
+	@RequestMapping("/profile/{name}")
 	public void download(@RequestParam("id") int documentId, HttpServletResponse response) {
 		
 		Optional<DocumentModel> docOpt = documentRepository.findById(documentId);
