@@ -1,14 +1,9 @@
 package swenga.controller;
 
-import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 import javax.validation.Valid;
 
@@ -16,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -27,13 +23,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 
 import swenga.dao.ProfileDao;
 import swenga.dao.UserRoleDao;
 import swenga.model.ProfilesModel;
-import swenga.model.QuestionModel;
 import swenga.model.UserRoleModel;
 
 @Controller
@@ -210,7 +203,7 @@ public class ProfilesController {
 			}
 			
 			if (username.equals("anonymousUser")) {
-				model.addAttribute("errorMessage", "The username is reserved! Bad Blauensteiner <3");
+				model.addAttribute("errorMessage", "The username is reserved!");
 				return "/addProfile";
 			}
 			
@@ -225,7 +218,7 @@ public class ProfilesController {
 			}
 			
 			if (!(confirmPassword.equals(password))) {
-				model.addAttribute("errorMessage", "Your passwords did not match!" + confirmPassword + password);
+				model.addAttribute("errorMessage", "Your passwords did not match!");
 				return "/addProfile";
 			}
 			
@@ -242,14 +235,11 @@ public class ProfilesController {
 				ProfilesModel newUser = new ProfilesModel(firstname, lastname, Boolean.valueOf(gender), birthday, username, password, true);
 				newUser.encryptPassword();
 				newUser.addUserRole(role);
-				profileDao.merge(newUser);
-				
+				profileDao.merge(newUser);				
 				
 				return "forward:list";
 			}
-			
 		}
-		
 		else {
 
 			model.addAttribute("errorMessage", "User name is already taken!");
@@ -257,6 +247,84 @@ public class ProfilesController {
 		}
 		
 		
+	}
+	
+	@RequestMapping(value = "/editProfile", method = RequestMethod.GET)
+	public String editProfile() {
+		return "editProfile";
+	}
+	
+	@RequestMapping(value = "/editProfile", method = RequestMethod.POST)
+	public String editProfile(@Valid ProfilesModel newProfileModel, BindingResult bindingResult, 
+			Model model, @RequestParam("username") String username, @RequestParam("oldPassword") String oldPassword, 
+			@RequestParam("newPassword") String newPassword, @RequestParam("confirmPassword") String confirmPassword) {
+		
+		if (bindingResult.hasErrors()) {
+			String errorMessage = "";
+			for (FieldError fieldError : bindingResult.getFieldErrors()) {
+				errorMessage += fieldError.getField() + " is invalid<br>";
+			}
+			model.addAttribute("errorMessage", errorMessage);
+			return "forward:/listEmployees";
+		}
+				
+		if (username.isEmpty()) {
+			model.addAttribute("errorMessage", "Please enter a valid username!");
+			return "editProfile";
+		}
+		if (username.equals("anonymousUser")) {
+			model.addAttribute("errorMessage", "The username is reserved!");
+			return "editProfile";
+		}
+		if(oldPassword.isEmpty()) {
+			model.addAttribute("errorMessage", "Please enter your old password!");
+			return "editProfile";
+		}
+		if(newPassword.isEmpty()) {
+			newPassword = oldPassword;
+		}
+		if(confirmPassword.isEmpty()) {
+			confirmPassword = oldPassword;
+		}
+		else {
+			List<ProfilesModel> user = profileDao.findByUsername(username);
+			
+			if (!CollectionUtils.isEmpty(user)) {
+					
+				model.addAttribute("errorMessage", "User name is already taken!");
+				return "editProfile";
+			}
+			else {
+				
+				String currentName = getUsername();
+				List<ProfilesModel> profile = profileDao.findByUsername(currentName);
+				System.out.println("1: " + currentName);
+				
+				ProfilesModel changingProfile = profileDao.getProfiles(profile.get(0).getId());
+				System.out.println("2: " + changingProfile.getPassword());
+				System.out.println(oldPassword);
+				BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+				
+				if (!encoder.matches(oldPassword, changingProfile.getPassword())) {
+					model.addAttribute("errorMessage", "Your old password was incorrect!");
+					return "editProfile";
+				}
+				
+				if (!newPassword.equals(confirmPassword)) {
+					model.addAttribute("errorMessage", "Your passwords did not match!");
+					return "editProfile";
+				}
+				else {
+					changingProfile.setUserName(username);
+					changingProfile.setPassword(newPassword);
+					changingProfile.encryptPassword();
+					profileDao.merge(changingProfile);
+					
+					return "forward:list";
+				}
+			}
+		}
+		return "forward:editProfile";
 	}
 	
 

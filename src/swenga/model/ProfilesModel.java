@@ -50,7 +50,6 @@ public class ProfilesModel implements java.io.Serializable {
 	
 	@ManyToOne (cascade = CascadeType.PERSIST)
 	private AnswersModel answers;
-
 	
 	@Column(name = "userName", nullable = false, length = 30)
 	private String userName;
