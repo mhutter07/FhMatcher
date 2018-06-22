@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.io.OutputStream;
 
-import javax.servlet.http.HttpServletResponse;
+//import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -346,6 +346,18 @@ public class ProfilesController {
 		return "forward:editProfile";
 	}
 	
+	@RequestMapping(value = "/block", method = RequestMethod.GET)
+	public String blockUser(Model model, int id) {
+		
+		ProfilesModel bannedProfile = profileDao.getProfiles(id);
+		
+		bannedProfile.setEnabled(!bannedProfile.isEnabled());
+		profileDao.merge(bannedProfile); 
+		
+		return "forward:fillMembers";
+	}
+	
+	
 
 	/**
 	 * Display the upload form
@@ -415,13 +427,13 @@ public class ProfilesController {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-	}
+	}*/
 	
 	
 	// nach klick auf "Upload" Button , Verweis auf die Seite -> http://localhost:8080/FhMatcher/upload?id=46
 	
 	
-	/*@RequestMapping(value = "/addQuestions", method = RequestMethod.POST)
+	@RequestMapping(value = "/addQuestions", method = RequestMethod.POST)
 	public String addQuestions(@Valid ProfilesModel newProfilesModel, BindingResult bindingResult, Model model, 
 			@RequestParam("question") QuestionModel questionID) {
 	
