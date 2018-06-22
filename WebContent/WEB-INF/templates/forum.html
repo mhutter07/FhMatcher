@@ -28,6 +28,18 @@
 	margin-left: 100px;
 }
 
+.btnCheck {
+	background-color: #B40431;
+	color: white;
+	width: 100px;
+	font-size: 20px;
+	float: right;
+}
+
+.txt{
+	font-size: 20px;
+}
+
 .btn:hover {
 	background-color: #DF013A;
 	color: white;
@@ -36,6 +48,15 @@
 th {
 	font-size: 20px;
 }
+
+body{
+	background-image: url("/FhMatcher/images/footer-hearts.png");
+	background-repeat: no-repeat;
+    background-position: bottom;
+    background-attachment: fixed;
+    width: 100%;
+}
+
 </style>
 </head>
 
@@ -62,9 +83,9 @@ th {
 			</thead>
 			<tbody>
 				<tr th:each="posts : ${posts}">
-					<td th:text="${posts.user}"></td>
-					<td th:text="${posts.header}"></td>
-					<td><a th:href="@{/forum/check(id=${posts.id})}" class = "btn">Check</a></td>
+					<td class="txt" th:text="${posts.user}"></td>
+					<td class="txt" th:text="${posts.header}"></td>
+					<td><a th:href="@{/forum/check(id=${posts.id})}" class = "btn btnCheck"> Check </a></td>
 					</tr>
 			</tbody>
 		</table>
@@ -82,6 +103,7 @@ th {
 	<!-- JS for Datetime picker -->
 	<script type="text/javascript"
 		src="http://www.malot.fr/bootstrap-datetimepicker/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+
 
 
 </body>

@@ -40,6 +40,7 @@ import swenga.model.UserRoleModel;
 import swenga.jpa.dao.DocumentRepo;
 import swenga.model.DocumentModel;
 import swenga.jpa.dao.ProfileRepo;
+import swenga.model.QuestionModel;
 
 @Controller
 public class ProfilesController {
@@ -164,12 +165,6 @@ public class ProfilesController {
 	
 	@RequestMapping(value = "/matches", method = RequestMethod.GET)
 	public String matches(Model model) {
-		Date now = new Date();
-		ProfilesModel user1 = new ProfilesModel("Dominik", "Pagger", false, now, "domi", "password", true);
-		profileDao.persist(user1);
-		
-		List<ProfilesModel> profiles = profileDao.getProfiles();
-		model.addAttribute("profiles", profiles);
 		return "matches";
 	}	
 
@@ -183,6 +178,10 @@ public class ProfilesController {
 			@RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname, @RequestParam("gender") String gender,
 			@RequestParam("dayOfBirth") String dayOfBirth, @RequestParam("username") String username, 
 			@RequestParam("password") String password, @RequestParam("confirmPassword") String confirmPassword) throws ParseException, java.text.ParseException {
+		
+		Date now = new Date();
+		SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
+		Date birthday = formatDate.parse(dayOfBirth);
 		
 		if (bindingResult.hasErrors()) {
 			String errorMessage = "";
@@ -211,7 +210,7 @@ public class ProfilesController {
 				return "/addProfile";
 			}
 			
-			if (dayOfBirth.isEmpty()) {
+			if (dayOfBirth.isEmpty() || birthday.compareTo(now) > 0) {
 				model.addAttribute("errorMessage", "Please enter a valid day of birth!");
 				return "/addProfile";
 			}
@@ -242,10 +241,7 @@ public class ProfilesController {
 			}
 			
 			else {
-			
-				SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
-				Date birthday = formatDate.parse(dayOfBirth);
-				
+							
 				UserRoleModel role = userRoleDao.getRole("ROLE_USER");
 						if (role == null) {
 							role = new UserRoleModel("ROLE_USER");
@@ -256,7 +252,7 @@ public class ProfilesController {
 				newUser.addUserRole(role);
 				profileDao.merge(newUser);				
 				
-				return "forward:list";
+				return "forward:/list";
 			}
 		}
 		else {
@@ -346,6 +342,18 @@ public class ProfilesController {
 		return "forward:editProfile";
 	}
 	
+	@RequestMapping(value = "/block", method = RequestMethod.GET)
+	public String blockUser(Model model, int id) {
+		
+		ProfilesModel bannedProfile = profileDao.getProfiles(id);
+		
+		bannedProfile.setEnabled(!bannedProfile.isEnabled());
+		profileDao.merge(bannedProfile); 
+		
+		return "forward:fillMembers";
+	}
+	
+	
 
 	/**
 	 * Display the upload form
@@ -373,11 +381,11 @@ public class ProfilesController {
 			ProfilesModel profile = profileOpt.get();
 			
 			//Already a document available -> delete it
-			if (profile.getDocument() != null) {
+			/*if (profile.getDocument() != null) {
 				documentRepository.delete(profile.getDocument());
 				//remove relationship
 				profile.setDocument(null);
-			}
+			}*/
 			
 			//Create new Document with all infos
 			DocumentModel document = new DocumentModel();
@@ -396,9 +404,12 @@ public class ProfilesController {
 		
 		return "redirect:/profile/"+getUsername();
 	}
-	/*
-	@RequestMapping("/download")
+
+	
+
+	@RequestMapping("profile/imageUp")
 	public void download(@RequestParam("id") int documentId, HttpServletResponse response) {
+
 		
 		Optional<DocumentModel> docOpt = documentRepository.findById(documentId);
 		if (!docOpt.isPresent()) throw new IllegalArgumentException("No document with id "+documentId);
@@ -415,14 +426,40 @@ public class ProfilesController {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+
 	}
 	
-	*/
+
+	@RequestMapping("/profile/image")
+	public void downloadImage(@RequestParam("id") int profileId, HttpServletResponse response) {
+		
+		Optional<ProfilesModel> profileOpt = profileRepository.findById(profileId);
+		if (!profileOpt.isPresent())
+			throw new IllegalArgumentException("No profile with id " + profileId);
+		
+		ProfilesModel profile = profileOpt.get();
+		
+		List<DocumentModel> docOpt = documentRepository.findAllByName(profile);
+		DocumentModel doc = docOpt.get(0);
+		
+		try {
+			
+			OutputStream out = response.getOutputStream();
+			response.setContentType(doc.getContentType());
+			out.write(doc.getContent());
+			out.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+
 	
 	// nach klick auf "Upload" Button , Verweis auf die Seite -> http://localhost:8080/FhMatcher/upload?id=46
 	
 	
-	/*@RequestMapping(value = "/addQuestions", method = RequestMethod.POST)
+	@RequestMapping(value = "/addQuestions", method = RequestMethod.POST)
 	public String addQuestions(@Valid ProfilesModel newProfilesModel, BindingResult bindingResult, Model model, 
 			@RequestParam("question") QuestionModel questionID) {
 	
@@ -431,7 +468,7 @@ public class ProfilesController {
 			return "fillQuestions";
 
 	}
-*/
+
 	/*@ExceptionHandler(Exception.class)
 	public String handleAllException(Exception ex) {
 

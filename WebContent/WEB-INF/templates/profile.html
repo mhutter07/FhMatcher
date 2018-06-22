@@ -37,6 +37,13 @@
 	margin: 0;
 }
 
+.hearts {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+}
+
 .info {
 	color: grey;
 	font-size: 20px;
@@ -61,6 +68,16 @@
 	text-align: center;
 }
 
+.btnUpload{
+	color: white;
+	background-color: grey;
+	width: 80px;
+	height: 20px;
+	font-size: 14px;
+	text-align: center;
+	padding:0;
+}
+
 .error{
 	font-size: 24px;
 	text-align: center;
@@ -78,8 +95,8 @@ nav {
 
 article {
 	float: left;
-	padding: 100px;
 	width: 40%;
+	padding: 100px;
 }
 
 
@@ -95,6 +112,7 @@ p {
 	background-color: #DF013A;
 	color: white;
 }
+
 .btn:visited {
 	color: white;
 }
@@ -103,7 +121,6 @@ p {
 </style>
 </head>
 <body>
-
 
 <header>
 		<!--  Error message ----------------------------------------------------------- -->
@@ -118,18 +135,17 @@ p {
 			<tr th:each="profile : ${profi}">
 			<p th:if="${profile.document != null}">
 			
-			<a th:href="@{/download(id=${document.id})}"> 
-			<img th:src="@{/download(id=${document.id})}" onerror="this.src='../resources/default.jpg'">
+			<a th:href="@{/profile/image(id=${profile.id})}"> 
+			<img th:src="@{/profile/image(id=${profile.id})}" style="width: 100%">
 			</a>
-			<p th:unless="${profile.document != null}"><img src="/FhMatcher/images/user.jpg" alt="User" style="width: 100%"></p></tr>
+			<p th:unless="${profile.document != null}"><img src="/FhMatcher/images/user.jpg" alt="User" style="width: 100%"></p>
+			</tr>
 			
-			<!-- <a th:href="@{/animal/profileImage(id=${animal.id})}"
-							class="logo waves-effect pb-4"> <img
-							th:src="@{/animal/profileImage(id=${animal.id})}"
-							onerror="this.src='../resources/default.jpg'"
-							class="img-thumbnail" style="width: 100%; height: 100%;" alt="">
-</a> -->
-
+		
+		<tr th:each="profile : ${profi}">
+   		<a th:href="@{upload(id=${profile.id})}" class="btn btnUpload"/> Upload </a>
+   		 </tr>
+ 
 			 <tr th:each="profile : ${profi}">
 		<p class="title">Name: </p>
 		<p class="info"><td th:text=" ${profile.firstname}"></td> <td th:text="${profile.lastname}"></td></p>
@@ -142,8 +158,12 @@ p {
 
 
 	<article>
+
 		<a class="btn">Contact</a>
  		<a href="/FhMatcher/dropAnswers" class="btn"> Go to Questions </a></br>
+
+ 		<a href="/FhMatcher/fillQuestions" class="btn"> Go to Questions </a></br>
+
  		<a href="/FhMatcher/matches" class="btn">Matches</a>
  		<a href="/FhMatcher/editProfile" class="btn">Edit Profile</a>
  		<a href="/FhMatcher/forum" class="btn">Forum</a>
@@ -151,12 +171,15 @@ p {
       		<input class="btn" type="submit" value="Sign Out"/>
    		
     	</form>
-   		<tr th:each="profile : ${profi}">
+    	
+   		<!--<tr th:each="profile : ${profi}">
    		<a th:href="@{upload(id=${profile.id})}" class="btn"/> Upload </a>
-   		 </tr>
+   		 </tr><!-->
    		
 		<a sec:authorize="hasRole('ADMIN')" href="/FhMatcher/admin" class="btn">Admin Panel</a>
+	
 	</article>
 
+	<img class="hearts" src="/FhMatcher/images/footer-hearts.png">
 </body>
 </html>

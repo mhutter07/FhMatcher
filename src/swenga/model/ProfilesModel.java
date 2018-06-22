@@ -186,6 +186,7 @@ public class ProfilesModel implements java.io.Serializable {
 	public void setDocument(DocumentModel document) {
 		this.document = document;
 	}
+
 	
 	public Set<AnswersModel> getAnswers() {
 		return answers;
