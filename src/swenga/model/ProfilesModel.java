@@ -20,6 +20,9 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -48,8 +51,9 @@ public class ProfilesModel implements java.io.Serializable {
 	@ManyToOne (cascade = CascadeType.PERSIST)
 	private MatchesModel matches;
 	
-	@ManyToOne (cascade = CascadeType.PERSIST)
-	private AnswersModel answers;
+	@OneToMany(mappedBy= "profiles", fetch=FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
+	private Set<AnswersModel> answers;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private DocumentModel document;
@@ -175,19 +179,26 @@ public class ProfilesModel implements java.io.Serializable {
 		userRoles.add(userRole);
 	}
 	
-	public AnswersModel getAnswers() {
-		return answers;
-	}
-
-	public void setAnswers(AnswersModel answers) {
-		this.answers = answers;
-	}
-	
 	public DocumentModel getDocument() {
 		return document;
 	}
  
 	public void setDocument(DocumentModel document) {
 		this.document = document;
+	}
+	
+	public Set<AnswersModel> getAnswers() {
+		return answers;
+	}
+ 
+	public void setAnswers(Set<AnswersModel> answers) {
+		this.answers = answers;
+	}
+	
+	public void addAnswers(AnswersModel answer) {
+		if (answers==null) {
+			answers= new HashSet<AnswersModel>();
+		}
+		answers.add(answer);
 	}
 }

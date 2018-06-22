@@ -19,6 +19,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+
 @Entity
 @Table(name = "answers")
 
@@ -32,11 +36,19 @@ public class AnswersModel implements java.io.Serializable {
 	@Column(nullable = false)
 	private boolean answer;
 	
-	@OneToMany(mappedBy= "answers", fetch=FetchType.EAGER)
-	private Set<ProfilesModel> profiles;
+	@ManyToOne (cascade = CascadeType.PERSIST)
+	private ProfilesModel profiles;
 	
-	@OneToMany(mappedBy= "answers", fetch=FetchType.EAGER)
-	private Set<QuestionModel> questions;
+	@ManyToOne (cascade = CascadeType.PERSIST)
+	private QuestionModel questions;
+	
+	/*@OneToMany(mappedBy= "answers", fetch=FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
+	private Set<ProfilesModel> profiles;*/
+	
+	/*@OneToMany(mappedBy= "answers", fetch=FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
+	private Set<QuestionModel> questions;*/
 	
 	
 	@Version
@@ -67,34 +79,31 @@ public class AnswersModel implements java.io.Serializable {
 		this.answer = answer;
 	}
 	
-	public Set<ProfilesModel> getProfiles() {
-		return profiles;
-	}
- 
-	public void setProfiles(Set<ProfilesModel> profiles) {
-		this.profiles = profiles;
-	}
-	
-	public void addProfile(ProfilesModel profile) {
-		if (profiles==null) {
-			profiles= new HashSet<ProfilesModel>();
-		}
-		profiles.add(profile);
-	}
-	
-	public Set<QuestionModel> getQuestions() {
+	public QuestionModel getQuestions() {
 		return questions;
 	}
- 
-	public void setQuestions(Set<QuestionModel> questions) {
+
+	public void setQuestions(QuestionModel questions) {
 		this.questions = questions;
 	}
 	
-	public void addQuestion(QuestionModel question) {
-		if (questions==null) {
-			questions= new HashSet<QuestionModel>();
-		}
-		questions.add(question);
+	public ProfilesModel getProfiles() {
+		return profiles;
 	}
+
+	public void setProfiles(ProfilesModel profiles) {
+		this.profiles = profiles;
+	}
+
+	public void addProfile(ProfilesModel profileByUsername) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addQuestion(QuestionModel questionByID) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 
 }
