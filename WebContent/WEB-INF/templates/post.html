@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+<title>Forum</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<style>
+.txt {
+	font-size: 20px;
+}
+
+.btn {
+	background-color: #B40431;
+	color: white;
+	width: 200px;
+	font-size: 20px;
+	margin-left: 100px;
+	margin-bottom: 100px;
+}
+
+.btn:hover {
+	background-color: #DF013A;
+	color: white;
+}
+
+th {
+	font-size: 20px;
+}
+</style>
+</head>
+
+<body>
+	<div class="container" role="main">
+		<div class="page-header">
+			<h1>
+				<center>
+					<img src="/FhMatcher/images/FHMatcher.JPG">
+							<!--  Error message ----------------------------------------------------------- -->
+		<div th:unless="${errorMessage} == null" th:utext="${errorMessage}"
+			class="alert alert-danger" role="alert"></div>
+		<!--  Error message ----------------------------------------------------------- -->
+		
+				</center>
+			</h1>
+		</div>
+
+		<!--  1 simple button ----------------------------------------------------------- -->
+		<div class="row"></div>
+		<!--  1 simple button ----------------------------------------------------------- -->
+		<form class="form-horizontal" method="post"
+		th:action="@{/forum/post$confirm}">
+		<div class="form-group">
+			<label for="header">Header:</label>
+			<textarea class="form-control"rows = "1" id="header" name="header"></textarea>
+		</div>
+		<div class="form-group">
+			<label for="post">Text:</label>
+			<textarea class="form-control"rows = "5" id="post" name ="post"></textarea>
+		</div>
+		<button type="submit" class="btn">Post</button>
+		</form>
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<a href="/FhMatcher/forum" class="btn">Back to Forum</a>
+				<a href="/FhMatcher/profile" class="btn">Back to Profile</a>
+			</div>
+		</div>
+
+	</div>
+	<!--  End of container -->
+	<div th:include="~{includes/bootstrap :: bootstrapJS}" th:remove="tag" />
+
+	<!-- JS for Datetime picker -->
+	<script type="text/javascript"
+		src="http://www.malot.fr/bootstrap-datetimepicker/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+
+
+</body>
+
+</html>
