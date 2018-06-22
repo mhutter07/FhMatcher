@@ -116,8 +116,19 @@ p {
 		<div class="card">
 			<!-- <img src="/FhMatcher/images/user.jpg" alt="User" style="width: 100%">-->
 			<tr th:each="profile : ${profi}">
+			<p th:if="${profile.document != null}">
+			
+			<a th:href="@{/download(documentId=${document.id})}"> 
+			<img th:src="@{/download(documentId=${document.id})}">
+			</a>
 			<p th:unless="${profile.document != null}"><img src="/FhMatcher/images/user.jpg" alt="User" style="width: 100%"></p></tr>
 			
+			<!-- <a th:href="@{/animal/profileImage(id=${animal.id})}"
+							class="logo waves-effect pb-4"> <img
+							th:src="@{/animal/profileImage(id=${animal.id})}"
+							onerror="this.src='../resources/default.jpg'"
+							class="img-thumbnail" style="width: 100%; height: 100%;" alt="">
+</a> -->
 
 			 <tr th:each="profile : ${profi}">
 		<p class="title">Name: </p>

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.io.OutputStream;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -366,7 +367,7 @@ public class ProfilesController {
 		
 		try {
 			
-			Optional<ProfilesModel> profileOpt = profileDao.findById(profileId);
+			Optional<ProfilesModel> profileOpt = profileRepository.findById(profileId);
 			if (!profileOpt.isPresent()) throw new IllegalArgumentException("No user with id"+profileId);
 			
 			ProfilesModel profile = profileOpt.get();
@@ -386,7 +387,7 @@ public class ProfilesController {
 			document.setFilename(file.getOriginalFilename());
 			document.setName(file.getName());
 			profile.setDocument(document);
-			profileDao.save(profile);
+			profileRepository.save(profile);
 		} catch (Exception ex) {
 			model.addAttribute("errorMessage","Error:" + ex.getMessage());
 		}
@@ -395,6 +396,27 @@ public class ProfilesController {
 		
 		return "redirect:/profile/"+getUsername();
 	}
+	
+	@RequestMapping("/download")
+	public void download(@RequestParam("documentId") int documentId, HttpServletResponse response) {
+		
+		Optional<DocumentModel> docOpt = documentRepository.findById(documentId);
+		if (!docOpt.isPresent()) throw new IllegalArgumentException("No document with id "+documentId);
+		
+		DocumentModel doc = docOpt.get();
+		
+		
+		try {
+			response.setHeader("Content-Disposition", "inline;filename=\"" + doc.getFilename() + "\"");
+			OutputStream out = response.getOutputStream();	
+			response.setContentType(doc.getContentType());
+			out.write(doc.getContent());
+			out.flush();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
 	
 	// nach klick auf "Upload" Button , Verweis auf die Seite -> http://localhost:8080/FhMatcher/upload?id=46
 	
@@ -414,7 +436,7 @@ public class ProfilesController {
 
 		return "error";
 
-<<<<<<< Updated upstream
+
 	}*/
 	
 }
