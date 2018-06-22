@@ -352,7 +352,7 @@ public class ProfilesController {
 		ProfilesModel bannedProfile = profileDao.getProfiles(id);
 		
 		bannedProfile.setEnabled(!bannedProfile.isEnabled());
-		profileDao.merge(bannedProfile);
+		profileDao.merge(bannedProfile); 
 		
 		return "forward:fillMembers";
 	}
