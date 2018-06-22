@@ -26,12 +26,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-<<<<<<< Updated upstream
-=======
+
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
->>>>>>> Stashed changes
+
 
 import swenga.dao.ProfileDao;
 import swenga.dao.UserRoleDao;
@@ -396,8 +395,7 @@ public class ProfilesController {
 	
 	// nach klick auf "Upload" Button , Verweis auf die Seite -> http://localhost:8080/FhMatcher/upload?id=46
 	
-	
->>>>>>> Stashed changes
+
 
 	/*@ExceptionHandler(Exception.class)
 	public String handleAllException(Exception ex) {
