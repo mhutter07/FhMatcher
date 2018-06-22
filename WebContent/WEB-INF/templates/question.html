@@ -58,7 +58,7 @@ th {
 			<div class="col-md-10 col-md-offset-1">
 
 				<form class="form-horizontal" method="post"
-					th:action="@{/questionNext(questionVal=${questionAtm})}">
+					th:action="@{/fillAnswers(questionVal=${questionAtm})}">
 					<table class="table table-striped">
 						<thead>
 							<tr>
@@ -73,12 +73,9 @@ th {
 								<div class="form-group">
 									<td class="txt" th:text="${question.id}"></td>
 									<td class="txt" th:text="${question.description}"></td>
-									<td>
-										<input type="radio" id="li" th:name="${question.id}"
-											value="links">
-										<input style="margin-left: 20px"
-											type="radio" id="re" th:name="${question.id}" value="rechts">
-									</td>
+									<td><input type="radio" id="li" th:name="answer" value="true">
+									<input style="margin-left: 20px"
+										type="radio" id="re" th:name="answer" value="false"></td>
 								</div>
 							</tr>
 							<!--  list all items ----------------------------------------------------------- -->

@@ -411,7 +411,6 @@ public class ProfilesController {
 
 		return "error";
 
-<<<<<<< Updated upstream
 	}*/
 	
 }

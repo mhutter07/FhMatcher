@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import swenga.model.AnswersModel;
+import swenga.model.QuestionModel;
 
 @Repository
 @Transactional
@@ -27,6 +28,8 @@ public class AnswerDao {
 		return typedResultList;
 	}
 	
-
+	public void persist(AnswersModel answer) {
+		entityManager.persist(answer);
+	}
 
 }
