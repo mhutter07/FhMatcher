@@ -15,15 +15,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import swenga.dao.AnswerDao;
 import swenga.dao.QuestionDao;
+import swenga.dao.ProfileDao;
 import swenga.model.ProfilesModel;
 import swenga.model.QuestionModel;
+import swenga.model.AnswersModel;
 
 @Controller
 public class QuestionController {
 
 	@Autowired
 	QuestionDao questionDao;
+	
+	@Autowired
+	AnswerDao answerDao;
+	
+	@Autowired
+	ProfileDao profileDao;
 
 	public String getUsername() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -55,7 +64,20 @@ public class QuestionController {
 
 		return "question";
 	}
-
+	
+	@RequestMapping("/fillAnswers")
+	@Transactional
+	public String fillAnswers(Model model, @RequestParam("answer") String answer, @RequestParam("questionVal") int questionID) {
+		
+		
+		AnswersModel a1 = new AnswersModel(Boolean.valueOf(answer));
+		a1.addProfile(profileDao.getProfileByUsername(getUsername()));
+		a1.addQuestion(questionDao.getQuestionByID(questionID));
+		answerDao.persist(a1);
+		System.out.println("Hi");
+		return "forward:/questionNext"+questionID;
+	}
+	
 	@RequestMapping("/fillQuestions")
 	@Transactional
 	public String fillQuestions(Model model) {

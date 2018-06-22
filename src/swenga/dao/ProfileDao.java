@@ -86,6 +86,18 @@ public class ProfileDao {
 		List<ProfilesModel> typedResultList = typedQuery.getResultList();
 		return typedResultList;
 	}
+	
+	public ProfilesModel getProfileByUsername(String username) {
+		try {
+			TypedQuery<ProfilesModel> typedQuery = entityManager.createQuery(
+					"select q from ProfilesModel q where q.username = :username",ProfilesModel.class);
+			typedQuery.setParameter("username", username);
+			ProfilesModel profile = typedQuery.getSingleResult();
+			return profile;
+		} catch (Exception ex) {
+			return null;
+		}
+	}
 
 	public void persist(ProfilesModel user) {
 		entityManager.persist(user);
@@ -93,9 +105,9 @@ public class ProfileDao {
 	
 	public boolean isTableEmpty()
 	   {   
-		TypedQuery<QuestionModel> typedQuery = entityManager.createQuery(
-				"select q from ProfilesModel q", QuestionModel.class);
-		List<QuestionModel> typedResultList = typedQuery.getResultList();
+		TypedQuery<ProfilesModel> typedQuery = entityManager.createQuery(
+				"select q from ProfilesModel q", ProfilesModel.class);
+		List<ProfilesModel> typedResultList = typedQuery.getResultList();
 		
 		if(typedResultList.isEmpty()) return true;
 		

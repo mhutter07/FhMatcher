@@ -29,8 +29,8 @@ public class AnswersModel implements java.io.Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(nullable = false, length = 60)
-	private String answerText;
+	@Column(nullable = false)
+	private boolean answer;
 	
 	@OneToMany(mappedBy= "answers", fetch=FetchType.EAGER)
 	private Set<ProfilesModel> profiles;
@@ -46,9 +46,9 @@ public class AnswersModel implements java.io.Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public AnswersModel(String answerText) {
+	public AnswersModel(boolean answer) {
 		super();
-		this.answerText = answerText;
+		this.answer = answer;
 	}
 
 	public int getId() {
@@ -59,12 +59,12 @@ public class AnswersModel implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public String getAnswerText() {
-		return answerText;
+	public boolean isAnswer() {
+		return answer;
 	}
-
-	public void setAnswerText(String answerText) {
-		this.answerText = answerText;
+	
+	public void setAnswer(boolean answer) {
+		this.answer = answer;
 	}
 	
 	public Set<ProfilesModel> getProfiles() {
@@ -89,6 +89,12 @@ public class AnswersModel implements java.io.Serializable {
 	public void setQuestions(Set<QuestionModel> questions) {
 		this.questions = questions;
 	}
-
+	
+	public void addQuestion(QuestionModel question) {
+		if (questions==null) {
+			questions= new HashSet<QuestionModel>();
+		}
+		questions.add(question);
+	}
 
 }

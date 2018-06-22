@@ -435,8 +435,6 @@ public class ProfilesController {
 	public String handleAllException(Exception ex) {
 
 		return "error";
-
-
 	}*/
 	
 }
