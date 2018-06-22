@@ -186,6 +186,7 @@ public class ProfilesModel implements java.io.Serializable {
 	public void setDocument(DocumentModel document) {
 		this.document = document;
 	}
+
 	
 	public Set<AnswersModel> getAnswers() {
 		return answers;
@@ -200,5 +201,11 @@ public class ProfilesModel implements java.io.Serializable {
 			answers= new HashSet<AnswersModel>();
 		}
 		answers.add(answer);
+	}
+	
+
+	public void addDocument(DocumentModel document) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -7,6 +7,32 @@
 <div th:replace="~{includes/bootstrap :: bootstrapMeta}" />
 <title>FH Matcher</title>
 <div th:replace="~{includes/bootstrap :: bootstrapCSS}" />
+
+<style>
+
+.btn {
+	background-color: #B40431;
+	color: white;
+	width: 200px;
+	font-size: 20px;
+	margin-left: 30px;
+	margin-bottom: 100px;
+}
+
+.btn:hover {
+	background-color: #DF013A;
+	color: white;
+}
+
+body{
+	background-image: url("/FhMatcher/images/footer-hearts.png");
+	background-repeat: no-repeat;
+    background-position: bottom;
+    background-attachment: fixed;
+    width: 100%;
+}
+
+</style>
 </head>
 <body>
 	<div class="container" role="main">
@@ -30,8 +56,6 @@
 			class="alert alert-success" role="warning"></div>
 		<!--   message ----------------------------------------------------------- -->
 
-		<nav th:replace="~{includes/searchNav :: search}"></nav>
-
 		<!--  1 simple button ----------------------------------------------------------- -->
 		<div class="row">
 		</div>
@@ -43,14 +67,14 @@
 			<div class="col-md-8 col-md-offset-2">
 				<form class="form-horizontal" enctype="multipart/form-data" method="post" action="upload">
 					<fieldset>
-						<legend th:text="'Upload Image for user ' + ${profileId}"></legend>
+						<center><legend th:text="'Upload Image for ' + ${user}"></legend></center>
 						
 						<input type="hidden" name="id" th:value="${profileId}">
 						
             			
 
 						<div class="form-group">
-							<label for="inputFile" class="col-md-2 control-label">File:</label>
+							<label for="inputFile" class="col-md-2 control-label" style="font-size: 16px">File:</label>
 							<div class="col-md-10">
 								<input class="form-control" id="inputFile" type="file" name="myFile">
 							</div>
@@ -58,9 +82,9 @@
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-2">
 							
-								<button type="submit" class="btn btn-primary">Upload</button>
-								<a href="profile">
-									<button type="button" class="btn btn-default">Cancel</button>
+								<button type="submit" class="btn">Upload</button>
+								<a href=@{/profile(id=${profile.id})}>
+									<button type="button" class="btn">Cancel</button>
 								</a>
 							</div>
 						</div>
@@ -69,6 +93,5 @@
 				</form>
 			</div>
 		</div>
-
 </body>
 </html>

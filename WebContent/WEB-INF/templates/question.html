@@ -37,6 +37,14 @@
 th {
 	font-size: 20px;
 }
+
+body{
+	background-image: url("/FhMatcher/images/footer-hearts.png");
+	background-repeat: no-repeat;
+    background-position: bottom;
+    background-attachment: fixed;
+    width: 100%;
+}
 </style>
 </head>
 
@@ -73,8 +81,9 @@ th {
 								<div class="form-group">
 									<td class="txt" th:text="${question.id}"></td>
 									<td class="txt" th:text="${question.description}"></td>
-									<td><input type="radio" id="li" th:name="answer" value="true">
-									<input style="margin-left: 20px"
+									<td><input style="margin-left: 20px; float:right;"
+										type="radio" id="li" th:name="answer" th:checked="checked" value="true">
+									<input style="float:right;"
 										type="radio" id="re" th:name="answer" value="false"></td>
 								</div>
 							</tr>
@@ -95,7 +104,6 @@ th {
 	<!-- JS for Datetime picker -->
 	<script type="text/javascript"
 		src="http://www.malot.fr/bootstrap-datetimepicker/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
-
 
 </body>
 

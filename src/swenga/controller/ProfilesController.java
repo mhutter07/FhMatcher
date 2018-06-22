@@ -3,12 +3,13 @@ package swenga.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Set;
 import java.util.List;
 
 import java.util.Optional;
 import java.io.OutputStream;
 
-//import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,7 @@ import swenga.model.UserRoleModel;
 import swenga.jpa.dao.DocumentRepo;
 import swenga.model.DocumentModel;
 import swenga.jpa.dao.ProfileRepo;
+import swenga.model.QuestionModel;
 
 @Controller
 public class ProfilesController {
@@ -174,6 +176,14 @@ public class ProfilesController {
 	public String admin() {
 		return "forward:fillMembers";
 	}
+<<<<<<< HEAD
+=======
+	
+	@RequestMapping(value = "/matches", method = RequestMethod.GET)
+	public String matches(Model model) {
+		return "matches";
+	}	
+>>>>>>> Master/master
 
 	@RequestMapping(value = "/addProfile", method = RequestMethod.GET)
 	public String addProfile() {
@@ -185,6 +195,10 @@ public class ProfilesController {
 			@RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname, @RequestParam("gender") String gender,
 			@RequestParam("dayOfBirth") String dayOfBirth, @RequestParam("username") String username, 
 			@RequestParam("password") String password, @RequestParam("confirmPassword") String confirmPassword) throws ParseException, java.text.ParseException {
+		
+		Date now = new Date();
+		SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
+		Date birthday = formatDate.parse(dayOfBirth);
 		
 		if (bindingResult.hasErrors()) {
 			String errorMessage = "";
@@ -213,7 +227,7 @@ public class ProfilesController {
 				return "/addProfile";
 			}
 			
-			if (dayOfBirth.isEmpty()) {
+			if (dayOfBirth.isEmpty() || birthday.compareTo(now) > 0) {
 				model.addAttribute("errorMessage", "Please enter a valid day of birth!");
 				return "/addProfile";
 			}
@@ -244,10 +258,7 @@ public class ProfilesController {
 			}
 			
 			else {
-			
-				SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
-				Date birthday = formatDate.parse(dayOfBirth);
-				
+							
 				UserRoleModel role = userRoleDao.getRole("ROLE_USER");
 						if (role == null) {
 							role = new UserRoleModel("ROLE_USER");
@@ -258,7 +269,7 @@ public class ProfilesController {
 				newUser.addUserRole(role);
 				profileDao.merge(newUser);				
 				
-				return "forward:list";
+				return "forward:/list";
 			}
 		}
 		else {
@@ -348,6 +359,18 @@ public class ProfilesController {
 		return "forward:editProfile";
 	}
 	
+	@RequestMapping(value = "/block", method = RequestMethod.GET)
+	public String blockUser(Model model, int id) {
+		
+		ProfilesModel bannedProfile = profileDao.getProfiles(id);
+		
+		bannedProfile.setEnabled(!bannedProfile.isEnabled());
+		profileDao.merge(bannedProfile); 
+		
+		return "forward:fillMembers";
+	}
+	
+	
 
 	/**
 	 * Display the upload form
@@ -358,7 +381,9 @@ public class ProfilesController {
 	
 	@RequestMapping(value = "/upload", method = RequestMethod.GET)
 	public String showUploadForm(Model model, @RequestParam ("id") int profileId) {
+		String user = getUsername();
 		model.addAttribute("profileId", profileId);
+		model.addAttribute("user", user);
 		return "uploadFile";
 	}
 	
@@ -375,21 +400,23 @@ public class ProfilesController {
 			ProfilesModel profile = profileOpt.get();
 			
 			//Already a document available -> delete it
-			if (profile.getDocument() != null) {
+			/*if (profile.getDocument() != null) {
 				documentRepository.delete(profile.getDocument());
 				//remove relationship
 				profile.setDocument(null);
-			}
+			}*/
 			
 			//Create new Document with all infos
 			DocumentModel document = new DocumentModel();
 			document.setContent(file.getBytes());
 			document.setContentType(file.getContentType());
-			document.setCreated(new Date());
+			//document.setCreated(new Date());
 			document.setFilename(file.getOriginalFilename());
-			document.setName(file.getName());
-			profile.setDocument(document);
-			profileRepository.save(profile);
+			document.setName(file.getOriginalFilename());
+			document.setProfiles(profile);
+			profile.addDocument(document);
+			documentRepository.save(document);
+			model.addAttribute("message","Bild wurde hochgeladen!");
 		} catch (Exception ex) {
 			model.addAttribute("errorMessage","Error:" + ex.getMessage());
 		}
@@ -398,9 +425,16 @@ public class ProfilesController {
 		
 		return "redirect:/profile/"+getUsername();
 	}
-	/*
-	@RequestMapping("/download")
+
+/*
+	@RequestMapping("profile/imageUp")
 	public void download(@RequestParam("id") int documentId, HttpServletResponse response) {
+
+
+	
+	@RequestMapping("/profile/imageUp")
+	public void download(@RequestParam("documentId") int documentId, HttpServletResponse response) {
+
 		
 		Optional<DocumentModel> docOpt = documentRepository.findById(documentId);
 		if (!docOpt.isPresent()) throw new IllegalArgumentException("No document with id "+documentId);
@@ -409,7 +443,7 @@ public class ProfilesController {
 		
 		
 		try {
-			response.setHeader("Content-Disposition", "inline;filename=\"" + doc.getFilename() + "\"");
+			//response.setHeader("Content-Disposition", "inline;filename=\"" + doc.getFilename() + "\"");
 			OutputStream out = response.getOutputStream();	
 			response.setContentType(doc.getContentType());
 			out.write(doc.getContent());
@@ -417,14 +451,41 @@ public class ProfilesController {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+
 	}
 	
-	*/
+
+	@RequestMapping("/profile/image")
+	public void downloadImage(@RequestParam("id") int profileId, HttpServletResponse response) {
+		
+		Optional<ProfilesModel> profileOpt = profileRepository.findById(profileId);
+		if (!profileOpt.isPresent())
+			throw new IllegalArgumentException("No profile with id " + profileId);
+		
+		ProfilesModel profile = profileOpt.get();
+		
+		List<DocumentModel> docOpt = documentRepository.findAllByName(profile);
+		DocumentModel doc = docOpt.get(0);
+		
+		try {
+			
+			OutputStream out = response.getOutputStream();
+			response.setContentType(doc.getContentType());
+			out.write(doc.getContent());
+			out.flush();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+	}
+	
+	
+
 	
 	// nach klick auf "Upload" Button , Verweis auf die Seite -> http://localhost:8080/FhMatcher/upload?id=46
 	
 	
-	/*@RequestMapping(value = "/addQuestions", method = RequestMethod.POST)
+	@RequestMapping(value = "/addQuestions", method = RequestMethod.POST)
 	public String addQuestions(@Valid ProfilesModel newProfilesModel, BindingResult bindingResult, Model model, 
 			@RequestParam("question") QuestionModel questionID) {
 	
@@ -433,7 +494,7 @@ public class ProfilesController {
 			return "fillQuestions";
 
 	}
-*/
+
 	/*@ExceptionHandler(Exception.class)
 	public String handleAllException(Exception ex) {
 
