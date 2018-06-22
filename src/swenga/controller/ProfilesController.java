@@ -3,6 +3,7 @@ package swenga.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Set;
 import java.util.List;
 
 import java.util.Optional;
@@ -393,11 +394,13 @@ public class ProfilesController {
 			DocumentModel document = new DocumentModel();
 			document.setContent(file.getBytes());
 			document.setContentType(file.getContentType());
-			document.setCreated(new Date());
+			//document.setCreated(new Date());
 			document.setFilename(file.getOriginalFilename());
-			document.setName(file.getName());
-			profile.setDocument(document);
-			profileRepository.save(profile);
+			document.setName(file.getOriginalFilename());
+			document.setProfiles(profile);
+			profile.addDocument(document);
+			documentRepository.save(document);
+			model.addAttribute("message","Bild wurde hochgeladen!");
 		} catch (Exception ex) {
 			model.addAttribute("errorMessage","Error:" + ex.getMessage());
 		}
@@ -419,7 +422,7 @@ public class ProfilesController {
 		
 		
 		try {
-			response.setHeader("Content-Disposition", "inline;filename=\"" + doc.getFilename() + "\"");
+			//response.setHeader("Content-Disposition", "inline;filename=\"" + doc.getFilename() + "\"");
 			OutputStream out = response.getOutputStream();	
 			response.setContentType(doc.getContentType());
 			out.write(doc.getContent());
@@ -449,12 +452,13 @@ public class ProfilesController {
 			response.setContentType(doc.getContentType());
 			out.write(doc.getContent());
 			out.flush();
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
-
+		
 	}
-
+	
+	
 
 	
 	// nach klick auf "Upload" Button , Verweis auf die Seite -> http://localhost:8080/FhMatcher/upload?id=46

@@ -25,6 +25,7 @@ public class DocumentModel implements java.io.Serializable {
 	private String name;
 	private String description;
 	private String filename;
+	private boolean pro;
  
 	@Lob
 	@Basic(fetch = FetchType.LAZY)
@@ -67,6 +68,14 @@ public class DocumentModel implements java.io.Serializable {
 	public void setFilename(String filename) {
 		this.filename = filename;
 	}
+	
+	public boolean isPro() {
+		return pro;
+	}
+
+	public void setPro(boolean pro) {
+		this.pro = pro;
+}
  
 	public byte[] getContent() {
 		return content;
@@ -93,6 +102,11 @@ public class DocumentModel implements java.io.Serializable {
 	}
 
 	public void add(DocumentModel document) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setProfiles(ProfilesModel profile) {
 		// TODO Auto-generated method stub
 		
 	}

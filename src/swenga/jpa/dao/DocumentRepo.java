@@ -17,6 +17,8 @@ public interface DocumentRepo extends JpaRepository<DocumentModel, Integer>{
 
 	List<DocumentModel> findAllByName(ProfilesModel profile);
 
+	void save(ProfilesModel profile);
+
 
 	
 

@@ -202,4 +202,10 @@ public class ProfilesModel implements java.io.Serializable {
 		}
 		answers.add(answer);
 	}
+	
+
+	public void addDocument(DocumentModel document) {
+		// TODO Auto-generated method stub
+		
+	}
 }
