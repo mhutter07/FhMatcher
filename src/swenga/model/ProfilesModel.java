@@ -52,13 +52,10 @@ public class ProfilesModel implements java.io.Serializable {
 	
 	@ManyToOne (cascade = CascadeType.PERSIST)
 	private AnswersModel answers;
-
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private DocumentModel document;
 
-
-	
 	@Column(name = "userName", nullable = false, length = 30)
 	private String userName;
  

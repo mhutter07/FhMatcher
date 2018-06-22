@@ -337,7 +337,7 @@ public class ProfilesController {
 					changingProfile.encryptPassword();
 					profileDao.merge(changingProfile);
 					
-					return "forward:list";
+					return "redirect:/logout";
 				}
 			}
 		}
