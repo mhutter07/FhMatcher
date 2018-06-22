@@ -61,6 +61,7 @@ public class ProfilesController {
 		List<ProfilesModel> profiles = profileDao.getProfiles();
 
 		model.addAttribute("profiles", profiles);
+		
 		return "index";
 	}
 	
@@ -385,12 +386,14 @@ public class ProfilesController {
 			document.setFilename(file.getOriginalFilename());
 			document.setName(file.getName());
 			profile.setDocument(document);
-			profileRepository.save(profile);
+			profileDao.save(profile);
 		} catch (Exception ex) {
 			model.addAttribute("errorMessage","Error:" + ex.getMessage());
 		}
 		
-		return "profile";
+			//model.addAttribute("profiles", profiles);
+		
+		return "redirect:/profile/"+getUsername();
 	}
 	
 	// nach klick auf "Upload" Button , Verweis auf die Seite -> http://localhost:8080/FhMatcher/upload?id=46

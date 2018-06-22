@@ -138,10 +138,10 @@ p {
  		<form th:action="@{/logout}" method="post" >
       		<input class="btn" type="submit" value="Sign Out"/>
    		
-   		</form> 
+    	</form>
    		<tr th:each="profile : ${profi}">
    		<a th:href="@{upload(id=${profile.id})}" class="btn"/> Upload </a>
-   		</form> </tr>
+   		 </tr>
    		
 		<a sec:authorize="hasRole('ADMIN')" href="/FhMatcher/admin" class="btn">Admin Panel</a>
 	</article>

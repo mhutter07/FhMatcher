@@ -23,8 +23,6 @@ import javax.persistence.Version;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-
-
 @Entity
 @Table(name = "profiles")
 
@@ -52,6 +50,7 @@ public class ProfilesModel implements java.io.Serializable {
 	
 	@ManyToOne (cascade = CascadeType.PERSIST)
 	private AnswersModel answers;
+
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private DocumentModel document;
