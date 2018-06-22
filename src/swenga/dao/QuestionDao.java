@@ -10,28 +10,28 @@ import java.sql.ResultSet;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import swenga.model.ProfilesModel;
 import swenga.model.QuestionModel;
 
 @Repository
 @Transactional
 public class QuestionDao {
-	
+
 	@PersistenceContext
 	protected EntityManager entityManager;
- 
+
 	public List<QuestionModel> getQuestions() {
- 
-		TypedQuery<QuestionModel> typedQuery = entityManager.createQuery(
-				"select q from QuestionModel q", QuestionModel.class);
+
+		TypedQuery<QuestionModel> typedQuery = entityManager.createQuery("select q from QuestionModel q",
+				QuestionModel.class);
 		List<QuestionModel> typedResultList = typedQuery.getResultList();
 		return typedResultList;
 	}
- 
+
 	public QuestionModel getQuestion(String description) {
 		try {
 			TypedQuery<QuestionModel> typedQuery = entityManager.createQuery(
-					"select q from QuestionModel q where q.description = :description",
-					QuestionModel.class);
+					"select q from QuestionModel q where q.description = :description", QuestionModel.class);
 			typedQuery.setParameter("description", description);
 			QuestionModel question = typedQuery.getSingleResult();
 			return question;
@@ -39,12 +39,11 @@ public class QuestionDao {
 			return null;
 		}
 	}
-	
+
 	public QuestionModel getQuestionByID(int id) {
 		try {
-			TypedQuery<QuestionModel> typedQuery = entityManager.createQuery(
-					"select q from QuestionModel q where q.id = :id",
-					QuestionModel.class);
+			TypedQuery<QuestionModel> typedQuery = entityManager
+					.createQuery("select q from QuestionModel q where q.id = :id", QuestionModel.class);
 			typedQuery.setParameter("id", id);
 			QuestionModel question = typedQuery.getSingleResult();
 			return question;
@@ -52,21 +51,19 @@ public class QuestionDao {
 			return null;
 		}
 	}
-	
+
 	public void persist(QuestionModel question) {
 		entityManager.persist(question);
 	}
-	
-	public boolean isTableEmpty()
-	   {   
-		TypedQuery<QuestionModel> typedQuery = entityManager.createQuery(
-				"select q from QuestionModel q", QuestionModel.class);
+
+	public boolean isTableEmpty() {
+		TypedQuery<QuestionModel> typedQuery = entityManager.createQuery("select q from QuestionModel q",
+				QuestionModel.class);
 		List<QuestionModel> typedResultList = typedQuery.getResultList();
-		
-		if(typedResultList.isEmpty()) return true;
-		
-	      return false;   
-	   }
+
+		if (typedResultList.isEmpty())
+			return true;
+
+		return false;
+	}
 }
-
-

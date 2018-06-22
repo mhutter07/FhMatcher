@@ -31,5 +31,16 @@ public class AnswerDao {
 	public void persist(AnswersModel answer) {
 		entityManager.persist(answer);
 	}
+	
+	public int deleteQuestionWithId(int id) {
+		int count = entityManager.createQuery("Delete From AnswersModel where id = :id").setParameter("id", id).executeUpdate();
+		return count;
+		
+	}
+	
+	
+	public void merge(AnswersModel model) {
+		entityManager.merge(model);
+	}
 
 }

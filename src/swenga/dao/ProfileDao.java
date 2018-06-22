@@ -90,7 +90,7 @@ public class ProfileDao {
 	public ProfilesModel getProfileByUsername(String username) {
 		try {
 			TypedQuery<ProfilesModel> typedQuery = entityManager.createQuery(
-					"select q from ProfilesModel q where q.username = :username",ProfilesModel.class);
+					"select q from ProfilesModel q where q.userName = :username",ProfilesModel.class);
 			typedQuery.setParameter("username", username);
 			ProfilesModel profile = typedQuery.getSingleResult();
 			return profile;

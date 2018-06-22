@@ -1,7 +1,8 @@
 package swenga.controller;
 
-import java.util.Date;
+import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -9,18 +10,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import swenga.dao.AnswerDao;
-import swenga.dao.QuestionDao;
 import swenga.dao.ProfileDao;
-import swenga.model.ProfilesModel;
-import swenga.model.QuestionModel;
+import swenga.dao.QuestionDao;
 import swenga.model.AnswersModel;
+import swenga.model.QuestionModel;
 
 @Controller
 public class QuestionController {
@@ -39,8 +38,8 @@ public class QuestionController {
 		return auth.getName();
 	}
 	
-	@RequestMapping(value = "/questionNext", method = { RequestMethod.GET, RequestMethod.POST })
-	public String question(Model model, @RequestParam("questionVal") int questionVal) {
+	@RequestMapping(value = "/questionNext{questionVal}", method = { RequestMethod.GET, RequestMethod.POST })
+	public String question(Model model, @PathVariable("questionVal") int questionVal) {
 		int questionAtm = questionVal + 1;
 		
 		if (questionAtm == 9) {
@@ -53,29 +52,37 @@ public class QuestionController {
 			return "question";
 		}
 	}
-
+	
 	@RequestMapping(value = "/question", method = { RequestMethod.GET, RequestMethod.POST })
 	public String question(Model model) {
 		int questionAtm = 1;
 		QuestionModel question = questionDao.getQuestionByID(questionAtm);
-
 		model.addAttribute("question", question);
 		model.addAttribute("questionAtm", questionAtm);
-
 		return "question";
 	}
 	
 	@RequestMapping("/fillAnswers")
-	@Transactional
-	public String fillAnswers(Model model, @RequestParam("answer") String answer, @RequestParam("questionVal") int questionID) {
+	public String fillAnswers(Principal principal,Model model, @RequestParam("answer") String answer, @RequestParam("questionVal") int questionID) {
 		
-		
+		principal.getName();
 		AnswersModel a1 = new AnswersModel(Boolean.valueOf(answer));
-		a1.addProfile(profileDao.getProfileByUsername(getUsername()));
-		a1.addQuestion(questionDao.getQuestionByID(questionID));
-		answerDao.persist(a1);
-		System.out.println("Hi");
+		a1.setProfiles(profileDao.getProfileByUsername(getUsername()));
+	    a1.setQuestions(questionDao.getQuestionByID(questionID));
+		answerDao.merge(a1);
+		System.out.println(profileDao.getProfileByUsername(getUsername()).getId());
+		System.out.println(questionDao.getQuestionByID(questionID).getDescription());
 		return "forward:/questionNext"+questionID;
+	}
+	
+	@RequestMapping("/dropAnswers")
+	public String dropAnswers() {
+		Set<AnswersModel> answers = profileDao.getProfileByUsername(getUsername()).getAnswers();
+		profileDao.getProfileByUsername(getUsername()).setAnswers(null);
+		for(AnswersModel answer : answers) {
+			answerDao.deleteQuestionWithId(answer.getId());
+		}
+		return "redirect:/fillQuestions";
 	}
 	
 	@RequestMapping("/fillQuestions")
