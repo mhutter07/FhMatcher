@@ -49,7 +49,7 @@
 							<th>User Name</th>
 							<th>Gender</th>
 							<th>DOB</th>
-							<th>Action</th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -61,6 +61,14 @@
 							<td th:text="${profile.userName}"></td>
 							<td th:text="${profile.gender ? 'Female' : 'Male'}"></td>
 							<td th:text="${#calendars.format(profile.dayOfBirth,'dd.MM.yyyy')}"></td>
+							<td>
+								<p th:if="${profile.enabled == false}">
+									<a th:href="@{/block(id=${profile.id})}" class="btn btn-success">Unblock</a>
+								</p>
+								<p th:if="${profile.enabled == true}">
+									<a th:href="@{/block(id=${profile.id})}" class="btn btn-warning">Block</a>
+								</p>
+							</td>
 							<td><a th:href="@{/delete(id=${profile.id})}" class="btn btn-danger">Delete</a></td>
 							
 						</tr>
