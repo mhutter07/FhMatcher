@@ -14,9 +14,9 @@
 		<intercept-url pattern="/addProfile" access="permitAll" />
 		<intercept-url pattern="/images/**" access="permitAll" />
 		<intercept-url pattern="/editProfile" access="hasRole('USER')" />
-		<intercept-url pattern="/profile/*" access="authenticated" />
 		<intercept-url pattern="/delete" access="hasRole('ADMIN')" />
 		<intercept-url pattern="/admin" access="hasRole('ADMIN')" />
+		<intercept-url pattern="/**" access="authenticated" />
 
 		<form-login login-page="/login" default-target-url='/profile' always-use-default-target='true' />
 		<logout logout-url="/logout" />

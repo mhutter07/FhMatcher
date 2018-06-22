@@ -12,4 +12,7 @@ import swenga.model.DocumentModel;
 @Transactional
 public interface DocumentRepo extends JpaRepository<DocumentModel, Integer>{
 
+
+	
+
 }

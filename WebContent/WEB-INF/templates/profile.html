@@ -116,8 +116,19 @@ p {
 		<div class="card">
 			<!-- <img src="/FhMatcher/images/user.jpg" alt="User" style="width: 100%">-->
 			<tr th:each="profile : ${profi}">
+			<p th:if="${profile.document != null}">
+			
+			<a th:href="@{/download(documentId=${document.id})}"> 
+			<img th:src="@{/download(documentId=${document.id})}">
+			</a>
 			<p th:unless="${profile.document != null}"><img src="/FhMatcher/images/user.jpg" alt="User" style="width: 100%"></p></tr>
 			
+			<!-- <a th:href="@{/animal/profileImage(id=${animal.id})}"
+							class="logo waves-effect pb-4"> <img
+							th:src="@{/animal/profileImage(id=${animal.id})}"
+							onerror="this.src='../resources/default.jpg'"
+							class="img-thumbnail" style="width: 100%; height: 100%;" alt="">
+</a> -->
 
 			 <tr th:each="profile : ${profi}">
 		<p class="title">Name: </p>
@@ -133,15 +144,16 @@ p {
 	<article>
 		<a class="btn">Contact</a>
  		<a href="/FhMatcher/fillQuestions" class="btn"> Go to Questions </a></br>
- 		<a th:href="matches" class="btn">Matches</a>
- 		<a th:href="editProfile" class="btn">Edit Profile</a>
+ 		<a href="/FhMatcher/matches" class="btn">Matches</a>
+ 		<a href="/FhMatcher/editProfile" class="btn">Edit Profile</a>
+ 		<a href="/FhMatcher/forum" class="btn">Forum</a>
  		<form th:action="@{/logout}" method="post" >
       		<input class="btn" type="submit" value="Sign Out"/>
    		
-   		</form> 
+    	</form>
    		<tr th:each="profile : ${profi}">
    		<a th:href="@{upload(id=${profile.id})}" class="btn"/> Upload </a>
-   		</form> </tr>
+   		 </tr>
    		
 		<a sec:authorize="hasRole('ADMIN')" href="/FhMatcher/admin" class="btn">Admin Panel</a>
 	</article>

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.io.OutputStream;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,7 @@ public class ProfilesController {
 		List<ProfilesModel> profiles = profileDao.getProfiles();
 
 		model.addAttribute("profiles", profiles);
+		
 		return "index";
 	}
 	
@@ -337,7 +339,7 @@ public class ProfilesController {
 					changingProfile.encryptPassword();
 					profileDao.merge(changingProfile);
 					
-					return "forward:list";
+					return "redirect:/logout";
 				}
 			}
 		}
@@ -365,7 +367,7 @@ public class ProfilesController {
 		
 		try {
 			
-			Optional<ProfilesModel> profileOpt = profileDao.findById(profileId);
+			Optional<ProfilesModel> profileOpt = profileRepository.findById(profileId);
 			if (!profileOpt.isPresent()) throw new IllegalArgumentException("No user with id"+profileId);
 			
 			ProfilesModel profile = profileOpt.get();
@@ -390,8 +392,31 @@ public class ProfilesController {
 			model.addAttribute("errorMessage","Error:" + ex.getMessage());
 		}
 		
-		return "profile";
+			//model.addAttribute("profiles", profiles);
+		
+		return "redirect:/profile/"+getUsername();
 	}
+	
+	@RequestMapping("/download")
+	public void download(@RequestParam("documentId") int documentId, HttpServletResponse response) {
+		
+		Optional<DocumentModel> docOpt = documentRepository.findById(documentId);
+		if (!docOpt.isPresent()) throw new IllegalArgumentException("No document with id "+documentId);
+		
+		DocumentModel doc = docOpt.get();
+		
+		
+		try {
+			response.setHeader("Content-Disposition", "inline;filename=\"" + doc.getFilename() + "\"");
+			OutputStream out = response.getOutputStream();	
+			response.setContentType(doc.getContentType());
+			out.write(doc.getContent());
+			out.flush();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
 	
 	// nach klick auf "Upload" Button , Verweis auf die Seite -> http://localhost:8080/FhMatcher/upload?id=46
 	
@@ -410,7 +435,6 @@ public class ProfilesController {
 	public String handleAllException(Exception ex) {
 
 		return "error";
-
 	}*/
 	
 }
