@@ -176,14 +176,8 @@ public class ProfilesController {
 	public String admin() {
 		return "forward:fillMembers";
 	}
-<<<<<<< HEAD
-=======
-	
-	@RequestMapping(value = "/matches", method = RequestMethod.GET)
-	public String matches(Model model) {
-		return "matches";
-	}	
->>>>>>> Master/master
+
+
 
 	@RequestMapping(value = "/addProfile", method = RequestMethod.GET)
 	public String addProfile() {
