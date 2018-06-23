@@ -21,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -489,13 +490,13 @@ public class ProfilesController {
 			
 			return "fillQuestions";
 
-	}
+	}*/
 
-	/*@ExceptionHandler(Exception.class)
+	@ExceptionHandler(Exception.class)
 	public String handleAllException(Exception ex) {
 
 		return "error";
-	}*/
+	}
 	
 }
 

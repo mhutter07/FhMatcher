@@ -68,4 +68,10 @@ public class ForumController {
 		return "redirect:/forum";
 	}
 	
+	@ExceptionHandler(Exception.class)
+	public String handleAllException(Exception ex) {
+
+		return "error";
+	}
+	
 }
