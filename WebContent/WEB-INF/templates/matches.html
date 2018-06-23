@@ -21,7 +21,16 @@
 	font-size: 20px;
 }
 
-.btn {
+.btnShow {
+	background-color: #B40431;
+	color: white;
+	width: 200px;
+	font-size: 20px;
+	margin-left: 100px;
+	float:right;
+}
+
+.btnBack {
 	background-color: #B40431;
 	color: white;
 	width: 200px;
@@ -88,7 +97,7 @@ body{
 							<td class="txt" th:text="${profile.firstname}"></td>
 							<td class="txt" th:text="${#calendars.format(profile.dayOfBirth,'dd.MM.yyyy')}"></td>
 							<td class="txt"th:text="${percentages.get(profile.id-1)}"></td>
-							<td><a th:href="@{/profileForward(username=${profile.userName})}" class="btn btn-danger">Show</a></td>
+							<td><a th:href="@{/profileForward(username=${profile.userName})}" class="btn btnShow">Show</a></td>
 						</tr>	
 					
 						
@@ -111,7 +120,7 @@ body{
 						
 					</tbody>
 				</table>
-				<a href="profile" class="btn btn"> Back </a>
+				<a href="profile" class="btn btnBack"> Back </a>
 				</br>
 
 			</div>
