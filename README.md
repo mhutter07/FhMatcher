@@ -23,8 +23,12 @@ Modells, Daos, Add & EditProfile, Forum, Matching
 ## FH Matcher:
 Eigene Datenbank in *java ressources/src/db.properties* eintragen
 
-Mittels /fillUsers die ersten User erstellen:
+Mittels */fillUsers* die ersten User erstellen:
+
+(Wichtig! */fillUsers* bevor eigenen User registrieren)
 - admin/password ... Administrator
 - user/password ... User
 
 Weitere User können registriert werden
+
+Application wurde in Chrome getestet
