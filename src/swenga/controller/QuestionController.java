@@ -83,40 +83,89 @@ public class QuestionController {
 		}
 		return "redirect:/fillQuestions";
 	}
-
+	
 	@RequestMapping(value = "/matches", method = RequestMethod.GET)
 	public String matches(Model model) {
-		
+		List<ProfilesModel> list = profileDao.getProfiles();
 		if (profileDao.getProfileByUsername(getUsername()).getAnswers().isEmpty()) {
 			model.addAttribute("errorMessage", "Please answer our questionnaire first!");
 			return "forward:profile";
 		}
 		List<Float> percentages = new ArrayList<Float>();
-		for (ProfilesModel profile : profileDao.getProfiles()) {
+		for (ProfilesModel profile : list) {
 			Set<AnswersModel> answersOwn = profileDao.getProfileByUsername(getUsername()).getAnswers();
 			Set<AnswersModel> answersMatch = profile.getAnswers();
 			List<AnswersModel> answersOwnList = new ArrayList<AnswersModel>(answersOwn);
 			List<AnswersModel> answersMatchList = new ArrayList<AnswersModel>(answersMatch);
-			int questionPosition = 0;
-			int matchCounter = 0;
-			int minimumAnswered = 0;
+			int questionPosition = new Integer(0);
+			float matchCounter = new Float(0);
+			int minimumAnswered = new Integer(0);
 			if (answersOwnList.size() < answersMatchList.size())
 				minimumAnswered = answersOwnList.size();
 			else
 				minimumAnswered = answersMatchList.size();
 			while (questionPosition < minimumAnswered) {
-				if (answersOwnList.get(questionPosition).isAnswer() && answersMatchList.get(questionPosition).isAnswer()) {
+				if (answersOwnList.get(questionPosition).isAnswer() == answersMatchList.get(questionPosition).isAnswer()) {
 					matchCounter = matchCounter + 1;
 				}
-				questionPosition = questionPosition + 1;
+				questionPosition = questionPosition + 1;				
 			}
-			float percentage = (matchCounter / answersOwnList.size()) * 100;
+			float percentage = (matchCounter / minimumAnswered) * 100;
 			percentages.add(percentage);
 		}
-		model.addAttribute("profiles", profileDao.getProfiles());
+		model.addAttribute("profiles", list);
 		model.addAttribute("percentages", percentages);
 		return "matches";
 	}
+	
+	
+/*	VERSION 2.0 without own User results in Out of Bounds Exception even though both lists have the same length
+ 
+  	public List<ProfilesModel> RemoveMePls(List<ProfilesModel> list) {
+		for (ProfilesModel profile : list) {
+			if(profileDao.getProfileByUsername(getUsername()).getId() == profile.getId()) {
+				list.remove(profile);
+			}
+		}
+		return list;
+	}
+ 
+	@RequestMapping(value = "/matches", method = RequestMethod.GET)
+	public String matches(Model model) {
+		List<ProfilesModel> list = RemoveMePls(profileDao.getProfiles());
+		if (profileDao.getProfileByUsername(getUsername()).getAnswers().isEmpty()) {
+			model.addAttribute("errorMessage", "Please answer our questionnaire first!");
+			return "forward:profile";
+		}
+		List<Float> percentages = new ArrayList<Float>();
+		for (ProfilesModel profile : list) {
+			Set<AnswersModel> answersOwn = profileDao.getProfileByUsername(getUsername()).getAnswers();
+			Set<AnswersModel> answersMatch = profile.getAnswers();
+			List<AnswersModel> answersOwnList = new ArrayList<AnswersModel>(answersOwn);
+			List<AnswersModel> answersMatchList = new ArrayList<AnswersModel>(answersMatch);
+			int questionPosition = new Integer(0);
+			float matchCounter = new Float(0);
+			int minimumAnswered = new Integer(0);
+			if (answersOwnList.size() < answersMatchList.size())
+				minimumAnswered = answersOwnList.size();
+			else
+				minimumAnswered = answersMatchList.size();
+			while (questionPosition < minimumAnswered) {
+				if (answersOwnList.get(questionPosition).isAnswer() == answersMatchList.get(questionPosition).isAnswer()) {
+					matchCounter = matchCounter + 1;
+				}
+				questionPosition = questionPosition + 1;				
+			}
+			float percentage = (matchCounter / minimumAnswered) * 100;
+			percentages.add(percentage);
+		}
+		System.out.println(list.size());
+		System.out.println(percentages);
+		model.addAttribute("profiles", list);
+		model.addAttribute("percentages", percentages);
+		return "matches";
+	}
+	*/
 
 	/*
 	 * @RequestMapping(value = "/matches", method = RequestMethod.GET) public String
@@ -132,7 +181,7 @@ public class QuestionController {
 	public String fillQuestions(Model model) {
 
 		if (questionDao.isTableEmpty()) {
-			QuestionModel q1 = new QuestionModel("Interessiert in? [m/w]");
+			QuestionModel q1 = new QuestionModel("Sport oder Schlafen? [sport/zzzzZZ]");
 			questionDao.persist(q1);
 			QuestionModel q2 = new QuestionModel("Morgen oder Abendmensch? [morgen/abend]");
 			questionDao.persist(q2);
