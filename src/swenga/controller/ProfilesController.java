@@ -3,13 +3,11 @@ package swenga.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Set;
 import java.util.List;
-
 import java.util.Optional;
-import java.io.OutputStream;
+import java.util.Set;
 
-import javax.servlet.http.HttpServletResponse;
+//import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,25 +21,21 @@ import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-
-
+import swenga.dao.AnswerDao;
 import swenga.dao.ProfileDao;
 import swenga.dao.UserRoleDao;
+import swenga.jpa.dao.DocumentRepo;
+import swenga.jpa.dao.ProfileRepo;
+import swenga.model.AnswersModel;
+import swenga.model.DocumentModel;
 import swenga.model.ProfilesModel;
 import swenga.model.UserRoleModel;
-import swenga.jpa.dao.DocumentRepo;
-import swenga.model.DocumentModel;
-import swenga.jpa.dao.ProfileRepo;
-import swenga.model.QuestionModel;
 
 @Controller
 public class ProfilesController {
@@ -51,6 +45,9 @@ public class ProfilesController {
 	
 	@Autowired
 	UserRoleDao userRoleDao;
+	
+	@Autowired
+	AnswerDao answerDao;
 	
 	@Autowired
 	DocumentRepo documentRepository;
@@ -150,6 +147,11 @@ public class ProfilesController {
 	@RequestMapping("/delete")
 	public String deleteData(Model model, @RequestParam int id) {
 		profileDao.delete(id);
+		Set<AnswersModel> answers = profileDao.getProfiles(id).getAnswers();
+		profileDao.getProfiles(id).setAnswers(null);
+		for (AnswersModel answer : answers) {
+			answerDao.deleteQuestionWithId(answer.getId());
+		}
 
 		return "forward:fillMembers";
 	}
